@@ -1,132 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PieceOfMind - Index</title>
-    <link rel="stylesheet" href="static/css/style.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>PieceOfMind — Home</title>
+  <link rel="stylesheet" href="../static/css/style.css"/>
 </head>
 <body>
-    <header class="sticky-nav">
-        <h1>PieceOfMind</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="onboarding.html">Onboarding</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="monitoring.html">Monitoring</a></li>
-                <li><a href="focus.html">Focus</a></li>
-                <li><a href="privacy.html">Privacy</a></li>
-                <li><a href="terms.html">Terms</a></li>
-            </ul>
-        </nav>
-        <button class="theme-toggle">Toggle Theme</button>
-    </header>
-    <main>
-        <section class="hero">
-            <video autoplay muted loop playsinline poster="static/img/hero-poster.jpg">
-                <source src="static/video/hero.mp4" type="video/mp4">
-                <source src="static/video/hero.webm" type="video/webm">
-                Your browser does not support the video tag.
-            </video>
-            <div class="hero-content">
-                <h2>Welcome to PieceOfMind</h2>
-                <p>Your privacy-first neuro-behavioral wellness app.</p>
-                <button class="btn btn-primary">View Demo</button>
-                <button class="btn btn-ghost">See Highlights</button>
-                <button class="pill video-toggle">Pause Video</button>
-            </div>
-        </section>
-        <section class="carousel-section">
-            <h2>Screenshots &amp; Video Demo</h2>
-            <div class="carousel">
-                <button class="carousel-arrow prev">Previous</button>
-                <div class="carousel-track">
-                    <div class="carousel-slide">
-                        <img src="static/img/dashboard.png" alt="Dashboard Screenshot">
-                    </div>
-                    <div class="carousel-slide">
-                        <img src="static/img/monitoring.png" alt="Monitoring Screenshot">
-                    </div>
-                    <div class="carousel-slide">
-                        <img src="static/img/focus.png" alt="Focus Screenshot">
-                    </div>
-                </div>
-                <button class="carousel-arrow next">Next</button>
-                <div class="carousel-dots">
-                    <button class="carousel-dot active"></button>
-                    <button class="carousel-dot"></button>
-                    <button class="carousel-dot"></button>
-                </div>
-            </div>
-            <div class="video-frame">
-                <img src="static/img/dashboard.png" alt="Video Placeholder">
-                <button class="play-button"></button>
-            </div>
-        </section>
-        <section class="testimonials">
-            <h2>Testimonials</h2>
-            <div class="testimonials-slider">
-                <div class="testimonial">
-                    <img src="static/img/testimonial1.jpg" alt="Testimonial 1">
-                    <p>"PieceOfMind has helped me manage my stress levels and improve my focus."</p>
-                </div>
-                <div class="testimonial">
-                    <img src="static/img/testimonial2.jpg" alt="Testimonial 2">
-                    <p>"I love the privacy-first approach of this app. It gives me peace of mind."</p>
-                </div>
-                <div class="testimonial">
-                    <img src="static/img/testimonial3.jpg" alt="Testimonial 3">
-                    <p>"The monitoring features are incredibly helpful for tracking my progress."</p>
-                </div>
-            </div>
-        </section>
-        <section class="about-us">
-            <h2>About Us</h2>
-            <div class="about-tiles">
-                <div class="about-tile">
-                    <h3>Our Mission</h3>
-                    <p>To provide privacy-first neuro-behavioral wellness solutions.</p>
-                </div>
-                <div class="about-tile">
-                    <h3>Our Vision</h3>
-                    <p>To empower individuals to take control of their mental well-being.</p>
-                </div>
-            </div>
-        </section>
-        <section class="login-signup">
-            <h2>Login / Sign Up</h2>
-            <button class="btn btn-primary clerk-button">Continue in Demo Mode</button>
-        </section>
-        <section class="accordion-section">
-            <h2>Design. Even more delightful.</h2>
-            <div class="accordion">
-                <div class="accordion-item">
-                    <button class="accordion-header">
-                        <h3>Section 1</h3>
-                    </button>
-                    <div class="accordion-content">
-                        <p>Content for section 1.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">
-                        <h3>Section 2</h3>
-                    </button>
-                    <div class="accordion-content">
-                        <p>Content for section 2.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 PieceOfMind</p>
-    </footer>
-    <div class="toast-container"></div>
-    <div class="modal-container"></div>
-    <div class="drawer-container"></div>
-    <div class="fab">Relax Now</div>
-    <script src="static/js/app.js"></script>
+  <header class="sticky-nav">
+    <h1 class="brand"><a href="/app/templates/index.html">PieceOfMind</a></h1>
+    <nav>
+      <ul>
+        <li><a href="/app/templates/index.html" class="active">Home</a></li>
+        <li class="auth-signed-in hidden"><a href="../templates/dashboard.html">Dashboard</a></li>
+        <li class="auth-signed-in hidden"><a href="../templates/monitoring.html">Monitoring</a></li>
+        <li class="auth-signed-in hidden"><a href="../templates/focus.html">Focus</a></li>
+        <li class="auth-signed-in hidden"><a href="../templates/settings.html">Settings</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button id="btn-signin" class="btn btn-ghost auth-signed-out">Log in</button>
+      <button id="btn-signup" class="btn btn-primary auth-signed-out">Sign up</button>
+      <button id="btn-logout" class="btn btn-ghost auth-signed-in hidden">Log out</button>
+      <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <video autoplay muted loop playsinline poster="../static/img/hero-poster.jpg">
+        <source src="../static/video/hero.mp4" type="video/mp4"/>
+        <source src="../static/video/hero.webm" type="video/webm"/>
+      </video>
+      <div class="hero-content">
+        <h2>Calm. Clarity. Control.</h2>
+        <p>Track stress & focus in real time with wearables, webcam and keyboard cadence.</p>
+        <div class="hero-cta">
+          <button id="btn-signup" class="btn btn-primary auth-signed-out">Get started</button>
+          <a href="/app/templates/monitoring.html" class="btn btn-ghost">Live Monitoring</a>
+          <button class="pill video-toggle">Pause Video</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="carousel-section">
+      <h2>Screenshots &amp; Demo</h2>
+      <div class="carousel">
+        <button class="carousel-arrow prev" aria-label="Previous slide">‹</button>
+        <div class="carousel-track">
+          <div class="carousel-slide"><img src="../static/img/dashboard.png" alt="Dashboard"></div>
+          <div class="carousel-slide"><img src="../static/img/monitoring.png" alt="Monitoring"></div>
+          <div class="carousel-slide"><img src="../static/img/focus.png" alt="Focus"></div>
+        </div>
+        <button class="carousel-arrow next" aria-label="Next slide">›</button>
+        <div class="carousel-dots">
+          <button class="carousel-dot active" aria-label="Slide 1"></button>
+          <button class="carousel-dot" aria-label="Slide 2"></button>
+          <button class="carousel-dot" aria-label="Slide 3"></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-us">
+      <h2>Why PieceOfMind</h2>
+      <div class="about-tiles">
+        <div class="about-tile"><h3>Scientific</h3><p>Signal-based insights that balance rigor and privacy.</p></div>
+        <div class="about-tile"><h3>Practical</h3><p>Guided focus, quick recovery, actionable dashboards.</p></div>
+        <div class="about-tile"><h3>Private</h3><p>Local processing where possible. You’re in control.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> PieceOfMind</p>
+    <nav class="footer-links">
+      <a href="/app/templates/privacy.html">Privacy</a>
+      <a href="/app/templates/terms.html">Terms</a>
+    </nav>
+  </footer>
+
+  <div class="toast-container"></div>
+  <div class="modal-container"></div>
+  <div class="drawer-container"></div>
+  <div class="fab">Relax Now</div>
+
+  <script src="../static/js/app.js"></script>
 </body>
 </html>
