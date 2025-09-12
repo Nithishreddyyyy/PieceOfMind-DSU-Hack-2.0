@@ -1,73 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PieceOfMind - Focus</title>
-    <link rel="stylesheet" href="../static/css/style.css">
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>PieceOfMind — Focus</title>
+  <link rel="stylesheet" href="../static/css/style.css"/>
 </head>
 <body>
-    <header class="sticky-nav">
-        <h1>PieceOfMind</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="onboarding.html">Onboarding</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="monitoring.html">Monitoring</a></li>
-                <li><a href="focus.html">Focus</a></li>
-                <li><a href="privacy.html">Privacy</a></li>
-                <li><a href="terms.html">Terms</a></li>
-            </ul>
-        </nav>
-        <button class="theme-toggle">Toggle Theme</button>
-    </header>
-    <main>
-        <section class="focus">
-            <h2>Focus</h2>
-            <div class="timer-presets">
-                <button class="btn btn-primary">20</button>
-                <button class="btn btn-primary">30</button>
-                <button class="btn btn-primary">40</button>
-            </div>
-            <div class="timer">
-                <div class="visual-ring"></div>
-                <p class="timer-text">00:00</p>
-            </div>
-            <button class="btn btn-success timer-toggle">Start</button>
-            <div class="mode-pills">
-                <button class="pill">Breath</button>
-                <button class="pill">Micro-stretch</button>
-                <button class="pill">Guided audio</button>
-            </div>
-            <div class="sequence-steps">
-                <div class="sequence-card">
-                    <h3>Step 1: Breath</h3>
-                    <p>Inhale deeply.</p>
-                </div>
-            </div>
-            <div class="alpha-beta-balance">
-                <h3>Alpha/Beta Balance</h3>
-                <div class="balance-bar"></div>
-            </div>
-            <div class="audio-player">
-                <audio controls>
-                    <source src="static/audio/calm1.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
-            <button class="mic-button">Voice Check-in</button>
-            <button class="btn btn-danger end-session">End Session</button>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 PieceOfMind</p>
-    </footer>
-    <div class="toast-container"></div>
-    <div class="modal-container"></div>
-    <div class="drawer-container"></div>
-    <div class="fab">Relax Now</div>
-    <script src="static/js/app.js"></script>
-    <script src="static/js/focus.js"></script>
+  <header class="sticky-nav">
+    <h1 class="brand"><a href="/app/templates/index.html">PieceOfMind</a></h1>
+    <nav>
+      <ul>
+        <li><a href="../templates/dashboard.html">Dashboard</a></li>
+        <li><a href="../templates/monitoring.html">Monitoring</a></li>
+        <li><a href="../templates/focus.html" class="active">Focus</a></li>
+        <li><a href="../templates/settings.html">Settings</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button id="btn-logout" class="btn btn-ghost">Log out</button>
+      <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="focus">
+      <h2>Focus</h2>
+      <div class="timer-presets">
+        <button class="btn btn-primary">20</button>
+        <button class="btn btn-primary">30</button>
+        <button class="btn btn-primary">40</button>
+      </div>
+      <div class="timer">
+        <div class="visual-ring"></div>
+        <p class="timer-text">25:00</p>
+      </div>
+      <button class="btn btn-success timer-toggle">Start</button>
+
+      <div class="mode-pills"><button class="pill">Breath</button><button class="pill">Micro-stretch</button><button class="pill">Guided audio</button></div>
+
+      <div class="sequence-steps">
+        <div class="sequence-card"><h3>Step 1: Breath</h3><p>Inhale 4 — Hold 4 — Exhale 6 (×3)</p></div>
+      </div>
+
+      <div class="alpha-beta-balance"><h3>Alpha/Beta Balance</h3><div class="balance-bar"></div></div>
+
+      <div class="audio-player">
+        <audio controls>
+          <source src="../static/audio/calm1.mp3" type="audio/mpeg"/>
+          Your browser doesn’t support audio.
+        </audio>
+      </div>
+
+      <button class="mic-button">Voice Check-in</button>
+      <button class="btn btn-danger end-session">End Session</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> PieceOfMind</p>
+    <nav class="footer-links"><a href="app/templates/privacy.html">Privacy</a><a href="app/templates/terms.html">Terms</a></nav>
+  </footer>
+
+  <div class="toast-container"></div><div class="modal-container"></div><div class="drawer-container"></div>
+  <div class="fab">Relax Now</div>
+
+  <script src="../static/js/app.js"></script>
+  <script src="../static/js/focus.js"></script>
 </body>
 </html>

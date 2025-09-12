@@ -1,88 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=width-device, initial-scale=1.0">
-    <title>PieceOfMind - Monitoring</title>
-    <link rel="stylesheet" href="../static/css/style.css">
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>PieceOfMind — Monitoring</title>
+  <link rel="stylesheet" href="../static/css/style.css"/>
 </head>
 <body>
-    <header class="sticky-nav">
-        <h1>PieceOfMind</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="onboarding.html">Onboarding</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="monitoring.html">Monitoring</a></li>
-                <li><a href="focus.html">Focus</a></li>
-                <li><a href="privacy.html">Privacy</a></li>
-                <li><a href="terms.html">Terms</a></li>
-            </ul>
-        </nav>
-        <button class="theme-toggle">Toggle Theme</button>
-    </header>
-    <main>
-        <section class="monitoring">
-            <h2>Monitoring</h2>
-            <div class="source-pills">
-                <h3>Signal Sources</h3>
-                <div class="pills">
-                    <button class="pill">EEG</button>
-                    <button class="pill">Apple Watch</button>
-                    <button class="pill">Webcam</button>
-                    <button class="pill">Keyboard</button>
-                    <button class="pill">Tab/Scroll</button>
-                </div>
+  <header class="sticky-nav">
+    <h1 class="brand"><a href="/app/templates/index.html">PieceOfMind</a></h1>
+    <nav>
+      <ul>
+        <li><a href="../templates/dashboard.html">Dashboard</a></li>
+        <li><a href="../templates/monitoring.html" class="active">Monitoring</a></li>
+        <li><a href="../templates/focus.html">Focus</a></li>
+        <li><a href="../templates/settings.html">Settings</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button id="btn-logout" class="btn btn-ghost">Log out</button>
+      <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="monitoring">
+      <h2>Monitoring</h2>
+
+      <div class="source-pills">
+        <h3>Signal Sources</h3>
+        <div class="pills">
+          <button class="pill">EEG</button>
+          <button class="pill">Apple Watch</button>
+          <button class="pill">Webcam</button>
+          <button class="pill">Keyboard</button>
+          <button class="pill">Tab/Scroll</button>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active">Live</button>
+        <button class="tab">AR Sensor Placement</button>
+      </div>
+
+      <div class="tab-content">
+        <div class="live-tab">
+          <div class="gauges">
+            <div class="gauge"><h3>Strain</h3><div class="circular-gauge" data-value="0.7"></div></div>
+            <div class="gauge"><h3>Drift</h3><div class="circular-gauge" data-value="0.2"></div></div>
+          </div>
+          <div class="timeline">
+            <h3>Timeline</h3>
+            <div class="timeline-chips">
+              <button class="pill">Info</button><button class="pill">Alert</button><button class="pill">Warn</button>
             </div>
-            <div class="tabs">
-                <button class="tab active">Live</button>
-                <button class="tab">AR Sensor Placement</button>
-            </div>
-            <div class="tab-content">
-                <div class="live-tab">
-                    <div class="gauges">
-                        <div class="gauge">
-                            <h3>Strain</h3>
-                            <div class="circular-gauge" data-value="0.7"></div>
-                        </div>
-                        <div class="gauge">
-                            <h3>Drift</h3>
-                            <div class="circular-gauge" data-value="0.2"></div>
-                        </div>
-                    </div>
-                    <div class="timeline">
-                        <h3>Timeline</h3>
-                        <div class="timeline-chips">
-                            <button class="pill">Info</button>
-                            <button class="pill">Alert</button>
-                            <button class="pill">Warn</button>
-                        </div>
-                        <div class="timeline-entries"></div>
-                    </div>
-                </div>
-                <div class="ar-tab">
-                    <h3>AR Sensor Placement</h3>
-                    <div class="ar-overlay">
-                        <video autoplay muted></video>
-                        <img src="static/img/placement-guide.png" alt="Placement Guide">
-                        <button class="btn btn-primary">Close</button>
-                    </div>
-                </div>
-            </div>
-            <div class="personalised-insights">
-                <h3>Personalised insights</h3>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 PieceOfMind</p>
-    </footer>
-    <div class="toast-container"></div>
-    <div class="modal-container"></div>
-    <div class="drawer-container"></div>
-    <div class="fab">Relax Now</div>
-    <script src="static/js/app.js"></script>
-    <script src="static/js/monitoring.js"></script>
+            <div class="timeline-entries"></div>
+          </div>
+        </div>
+
+        <div class="ar-tab">
+          <h3>AR Sensor Placement</h3>
+          <div class="ar-overlay">
+            <video autoplay muted playsinline></video>
+            <img src="../static/img/placement-guide.png" alt="Placement Guide"/>
+            <button class="btn btn-primary">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="personalised-insights"><h3>Personalised insights</h3></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> PieceOfMind</p>
+    <nav class="footer-links"><a href="/app/templates/privacy.html">Privacy</a><a href="/app/templates/terms.html">Terms</a></nav>
+  </footer>
+
+  <div class="toast-container"></div><div class="modal-container"></div><div class="drawer-container"></div>
+  <div class="fab">Relax Now</div>
+
+  <script src="../static/js/app.js"></script>
+  <script src="../static/js/monitoring.js"></script>
 </body>
 </html>
