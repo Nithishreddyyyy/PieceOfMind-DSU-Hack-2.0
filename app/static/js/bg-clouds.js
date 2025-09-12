@@ -1,36 +1,25 @@
-// Theme-aware VANTA CLOUDS (daylight for light; night sky for dark)
+// VANTA CLOUDS (theme-aware) – no placement changes
 (function () {
   const host = document.getElementById("animated-bg");
   if (!host) return;
 
   let effect = null;
-
-  const reduced = () =>
+  const isReduced = () =>
     (document.documentElement.getAttribute("data-reduced-motion") || "") === "reduce";
 
-  function colors() {
-    const dark = (document.documentElement.getAttribute("data-theme") || "light") === "dark";
-    if (dark) {
-      return {
-        backgroundColor: 0x0b1020, // night
-        skyColor: 0x0b1020,
-        cloudColor: 0x3b4252,     // dark clouds
-        cloudShadowColor: 0x111827
-      };
-    }
-    return {
-      backgroundColor: 0xf6f7fb, // daylight
-      skyColor: 0xcfe9ff,
-      cloudColor: 0xffffff,
-      cloudShadowColor: 0xa0aec0
-    };
+  function palette() {
+    const dark = (document.documentElement.getAttribute("data-theme") || "dark") === "dark";
+    return dark
+      ? { backgroundColor: 0x0b1020, skyColor: 0x0b1020, cloudColor: 0x2d3748, cloudShadowColor: 0x111827 }
+      : { backgroundColor: 0xf6f7fb, skyColor: 0xcfe9ff, cloudColor: 0xffffff, cloudShadowColor: 0xa0aec0 };
   }
 
   function init() {
-    if (reduced()) { try { effect?.destroy?.(); } catch{}; return; }
+    // Deactivate when reduced motion is on
+    if (isReduced()) { try { effect?.destroy?.(); } catch {} return; }
     if (!window.VANTA || !window.VANTA.CLOUDS) return;
 
-    const c = colors();
+    const c = palette();
     try {
       effect?.destroy?.();
       effect = window.VANTA.CLOUDS({
@@ -49,7 +38,6 @@
     } catch {}
   }
 
-  // Re-init on theme toggle
   const mo = new MutationObserver(init);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme","data-reduced-motion"] });
 
