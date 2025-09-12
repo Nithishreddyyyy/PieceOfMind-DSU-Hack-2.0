@@ -6,14 +6,16 @@
   <link rel="stylesheet" href="../static/css/style.css"/>
 </head>
 <body>
+  <div id="animated-bg" aria-hidden="true"></div>
+
   <header class="sticky-nav">
     <h1 class="brand"><a href="/app/templates/index.html">PieceOfMind</a></h1>
     <nav>
       <ul>
-        <li><a href="../templates/dashboard.html" class="active">Dashboard</a></li>
-        <li><a href="../templates/monitoring.html">Monitoring</a></li>
-        <li><a href="../templates/focus.html">Focus</a></li>
-        <li><a href="../templates/settings.html">Settings</a></li>
+        <li><a href="/app/templates/dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="/app/templates/monitoring.html">Monitoring</a></li>
+        <li><a href="/app/templates/focus.html">Focus</a></li>
+        <li><a href="/app/templates/settings.html">Settings</a></li>
       </ul>
     </nav>
     <div class="header-actions">
@@ -42,8 +44,6 @@
         <button class="btn btn-primary">Mini Timer 1</button>
         <button class="btn btn-primary">Mini Timer 2</button>
       </div>
-
-      <div class="empty-state"><p>First time here? Try a Focus session today.</p></div>
     </section>
   </main>
 
@@ -52,8 +52,12 @@
     <nav class="footer-links"><a href="/app/templates/privacy.html">Privacy</a><a href="/app/templates/terms.html">Terms</a></nav>
   </footer>
 
-  <div class="toast-container"></div><div class="modal-container"></div><div class="drawer-container"></div>
-  <div class="fab">Relax Now</div>
+  <div class="toast-container"></div>
+  
+
   <script src="../static/js/app.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.halo.min.js"></script>
+  <script src="../static/js/bg.js"></script>
 </body>
 </html>
