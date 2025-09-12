@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Depends
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from authlib.integrations.starlette_client import OAuth
 from starlette.middleware.sessions import SessionMiddleware
 import os
@@ -16,6 +17,7 @@ AUTH0_CLIENT_SECRET = os.getenv("AUTH0_CLIENT_SECRET")
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="your-random-secret-key")
 templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # OAuth Config
 oauth = OAuth()
