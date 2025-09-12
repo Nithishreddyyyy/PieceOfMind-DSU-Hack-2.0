@@ -4,18 +4,18 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>PieceOfMind — Home</title>
-  <link rel="stylesheet" href="/static/css/style.css"/>
+  <link rel="stylesheet" href="../static/css/style.css"/>
 </head>
 <body>
   <header class="sticky-nav">
-    <h1 class="brand"><a href="/app/templates/index.html">PieceOfMind</a></h1>
+    <h1 class="brand"><a href="/">PieceOfMind</a></h1>
     <nav>
       <ul>
-        <li><a href="/app/templates/index.html" class="active">Home</a></li>
-        <li class="auth-signed-in hidden"><a href="../templates/dashboard.html">Dashboard</a></li>
-        <li class="auth-signed-in hidden"><a href="../templates/monitoring.html">Monitoring</a></li>
-        <li class="auth-signed-in hidden"><a href="../templates/focus.html">Focus</a></li>
-        <li class="auth-signed-in hidden"><a href="../templates/settings.html">Settings</a></li>
+        <li><a href="/" class="active">Home</a></li>
+        <li class="auth-signed-in hidden"><a href="/dashboard">Dashboard</a></li>
+        <li class="auth-signed-in hidden"><a href="/monitoring">Monitoring</a></li>
+        <li class="auth-signed-in hidden"><a href="/focus">Focus</a></li>
+        <li class="auth-signed-in hidden"><a href="/settings">Settings</a></li>
       </ul>
     </nav>
     <div class="header-actions">
@@ -28,16 +28,16 @@
 
   <main>
     <section class="hero">
-      <video autoplay muted loop playsinline poster="../static/img/hero-poster.jpg">
-        <source src="../static/video/hero.mp4" type="video/mp4"/>
-        <source src="../static/video/hero.webm" type="video/webm"/>
+      <video autoplay muted loop playsinline poster="/static/img/hero-poster.jpg">
+        <source src="/static/video/hero.mp4" type="video/mp4"/>
+        <source src="/static/video/hero.webm" type="video/webm"/>
       </video>
       <div class="hero-content">
         <h2>Calm. Clarity. Control.</h2>
         <p>Track stress & focus in real time with wearables, webcam and keyboard cadence.</p>
         <div class="hero-cta">
           <button id="btn-signup" class="btn btn-primary auth-signed-out">Get started</button>
-          <a href="/app/templates/monitoring.html" class="btn btn-ghost">Live Monitoring</a>
+          <a href="/monitoring" class="btn btn-ghost">Live Monitoring</a>
           <button class="pill video-toggle">Pause Video</button>
         </div>
       </div>
@@ -48,9 +48,9 @@
       <div class="carousel">
         <button class="carousel-arrow prev" aria-label="Previous slide">‹</button>
         <div class="carousel-track">
-          <div class="carousel-slide"><img src="../static/img/dashboard.png" alt="Dashboard"></div>
-          <div class="carousel-slide"><img src="../static/img/monitoring.png" alt="Monitoring"></div>
-          <div class="carousel-slide"><img src="../static/img/focus.png" alt="Focus"></div>
+          <div class="carousel-slide"><img src="/static/img/dashboard.png" alt="Dashboard"></div>
+          <div class="carousel-slide"><img src="/static/img/monitoring.png" alt="Monitoring"></div>
+          <div class="carousel-slide"><img src="/static/img/focus.png" alt="Focus"></div>
         </div>
         <button class="carousel-arrow next" aria-label="Next slide">›</button>
         <div class="carousel-dots">
@@ -74,8 +74,8 @@
   <footer>
     <p>© <span id="year"></span> PieceOfMind</p>
     <nav class="footer-links">
-      <a href="/app/templates/privacy.html">Privacy</a>
-      <a href="/app/templates/terms.html">Terms</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
     </nav>
   </footer>
 
@@ -84,6 +84,6 @@
   <div class="drawer-container"></div>
   <div class="fab">Relax Now</div>
 
-  <script src="../static/js/app.js"></script>
+  <script src="/static/js/app.js"></script>
 </body>
 </html>
