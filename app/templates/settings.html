@@ -1,50 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PieceOfMind — Settings</title>
-  <link rel="stylesheet" href="/static/css/style.css"/>
+  <script>try{var s=JSON.parse(localStorage.getItem('pm:data:v1'))||{};document.documentElement.setAttribute('data-theme',s.theme||'dark');document.documentElement.setAttribute('data-reduced-motion',s.reducedMotion?'reduce':'no-preference');}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
+  <link rel="stylesheet" href="../static/css/style.css?v=7">
 </head>
 <body>
+  <div class="thin-ribbon">Tip: enable reduced motion if animations distract you<button class="ribbon-close" aria-label="Dismiss">✕</button></div>
+  <div id="animated-bg" aria-hidden="true"></div>
+
   <header class="sticky-nav">
-    <h1 class="brand"><a href="/">PieceOfMind</a></h1>
+    <h1 class="brand"><a href="/app/templates/index.html">PieceOfMind</a></h1>
     <nav>
       <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/monitoring">Monitoring</a></li>
-        <li><a href="/focus">Focus</a></li>
-        <li><a href="/settings" class="active">Settings</a></li>
+        <li><a href="/app/templates/dashboard.html">Dashboard</a></li>
+        <li><a href="/app/templates/monitoring.html">Monitoring</a></li>
+        <li><a href="/app/templates/focus.html">Focus</a></li>
+        <li><a href="/app/templates/settings.html" class="active">Settings</a></li>
       </ul>
     </nav>
-    <div class="header-actions">
-      <button id="btn-logout" class="btn btn-ghost">Log out</button>
-      <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
-    </div>
+    <div class="header-actions"><button id="btn-logout" class="btn btn-ghost">Log out</button><button class="theme-toggle">🌓</button></div>
   </header>
 
   <main>
     <section class="settings">
-      <h2>Settings</h2>
+      <h2 data-reveal="left">Settings</h2>
 
-      <div class="setting-row">
+      <div class="setting-row" data-reveal="up">
         <label for="sel-theme">Theme</label>
-        <select id="sel-theme">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
+        <select id="sel-theme"><option value="light">Light</option><option value="dark">Dark</option></select>
       </div>
 
-      <div class="setting-row">
+      <div class="setting-row" data-reveal="up">
         <label for="chk-reduced-motion">Reduced motion</label>
-        <input id="chk-reduced-motion" type="checkbox"/>
+        <input id="chk-reduced-motion" type="checkbox">
       </div>
 
-      <div class="setting-row">
+      <div class="setting-row" data-reveal="up">
         <label for="rng-ambience">Ambience volume</label>
-        <input id="rng-ambience" type="range" min="0" max="1" step="0.05"/>
+        <input id="rng-ambience" type="range" min="0" max="1" step="0.05">
       </div>
 
-      <div class="setting-row">
+      <div class="setting-row" data-reveal="up">
         <button id="btn-clear" class="btn btn-danger">Clear local data</button>
       </div>
     </section>
@@ -56,7 +54,14 @@
   </footer>
 
   <div class="toast-container"></div>
-  <script src="/static/js/app.js"></script>
-  <script src="/static/js/settings.js"></script>
+
+  <script src="../static/js/app.js?v=7"></script>
+  <script src="../static/js/effects.js?v=7"></script>
+  <script src="../static/js/settings.js?v=7"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
+<script src="../static/js/bg-clouds.js"></script>
+
+
 </body>
 </html>

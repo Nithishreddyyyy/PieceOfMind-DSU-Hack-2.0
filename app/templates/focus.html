@@ -1,70 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PieceOfMind — Focus</title>
-  <link rel="stylesheet" href="/static/css/style.css"/>
+  <script>try{var s=JSON.parse(localStorage.getItem('pm:data:v1'))||{};document.documentElement.setAttribute('data-theme',s.theme||'dark');document.documentElement.setAttribute('data-reduced-motion',s.reducedMotion?'reduce':'no-preference');}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
+  <link rel="stylesheet" href="../static/css/style.css?v=7">
 </head>
 <body>
+  <div class="thin-ribbon">Need a reset? Try a 2-min breathe — in Focus below.<button class="ribbon-close" aria-label="Dismiss">✕</button></div>
+  <div id="animated-bg" aria-hidden="true"></div>
+
   <header class="sticky-nav">
     <h1 class="brand"><a href="/">PieceOfMind</a></h1>
     <nav>
       <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/monitoring">Monitoring</a></li>
-        <li><a href="/focus" class="active">Focus</a></li>
-        <li><a href="/settings">Settings</a></li>
+        <li><a href="/app/templates/dashboard.html">Dashboard</a></li>
+        <li><a href="/app/templates/monitoring.html">Monitoring</a></li>
+        <li><a href="/app/templates/focus.html" class="active">Focus</a></li>
+        <li><a href="/app/templates/settings.html">Settings</a></li>
       </ul>
     </nav>
-    <div class="header-actions">
-      <button id="btn-logout" class="btn btn-ghost">Log out</button>
-      <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
-    </div>
+    <div class="header-actions"><button id="btn-logout" class="btn btn-ghost">Log out</button><button class="theme-toggle">🌓</button></div>
   </header>
 
   <main>
-    <section class="focus">
-      <h2>Focus</h2>
-      <div class="timer-presets">
-        <button class="btn btn-primary">20</button>
-        <button class="btn btn-primary">30</button>
-        <button class="btn btn-primary">40</button>
-      </div>
-      <div class="timer">
-        <div class="visual-ring"></div>
-        <p class="timer-text">25:00</p>
-      </div>
-      <button class="btn btn-success timer-toggle">Start</button>
+    <section id="recommendations" class="focus">
+      <h2 data-reveal="left">Focus</h2>
 
-      <div class="mode-pills"><button class="pill">Breath</button><button class="pill">Micro-stretch</button><button class="pill">Guided audio</button></div>
-
-      <div class="sequence-steps">
-        <div class="sequence-card"><h3>Step 1: Breath</h3><p>Inhale 4 — Hold 4 — Exhale 6 (×3)</p></div>
+      <!-- STRESS -->
+      <h3 data-reveal="up">Stress</h3>
+      <div class="grid" data-magnetic>
+        <div class="card" id="card-stress" data-tilt="6" data-reveal="up">
+          <h4>Stress reduction game</h4>
+          <p>Breath-controlled bubble: exhale to shrink, inhale to grow.</p>
+          <a class="btn btn-primary" href="#" onclick="window.poom.toast.show('Game placeholder');return false;">Play</a>
+        </div>
+        <div class="card" data-tilt="6" data-reveal="up">
+          <h4>Box breathing</h4><p>Inhale 4 • Hold 4 • Exhale 4 • Hold 4 (×4)</p>
+          <button class="btn btn-ghost">Start</button>
+        </div>
       </div>
 
-      <div class="alpha-beta-balance"><h3>Alpha/Beta Balance</h3><div class="balance-bar"></div></div>
-
-      <div class="audio-player">
-        <audio controls>
-          <source src="../static/audio/calm1.mp3" type="audio/mpeg"/>
-          Your browser doesn’t support audio.
-        </audio>
+      <!-- ANXIETY -->
+      <h3 data-reveal="up">Anxiety</h3>
+      <div class="grid binaural" data-magnetic>
+        <div class="card" id="card-anxiety" data-tilt="6" data-reveal="up">
+          <h4>Delta/Alpha binaural beats</h4>
+          <audio controls preload="metadata" style="width:100%">
+            <source src="../static/audio/binaural.mp3" type="audio/mpeg">
+          </audio>
+        </div>
+        <div class="card" data-tilt="6" data-reveal="up">
+          <h4>Soothing soundscapes</h4>
+          <button class="btn btn-ghost">Play Rain</button>
+          <button class="btn btn-ghost">Play Waves</button>
+        </div>
       </div>
 
-      <button class="mic-button">Voice Check-in</button>
-      <button class="btn btn-danger end-session">End Session</button>
+      <!-- BURNOUT -->
+      <h3 data-reveal="up">Burnout</h3>
+      <div class="grid" data-magnetic>
+        <div class="card" id="card-burnout" data-tilt="6" data-reveal="up">
+          <h4>Micro Break Reminders</h4>
+          <p>Gentle nudge every few minutes while you work.</p>
+          <button id="btn-microbreak" class="btn btn-primary">Enable Micro Break Reminders</button>
+        </div>
+        <div class="card" data-tilt="6" data-reveal="up">
+          <h4>Goal setting & tracking</h4>
+          <div class="badge">Break tasks into steps</div>
+          <div style="display:flex;gap:8px;margin:.5rem 0">
+            <input id="goal-input" type="text" placeholder="Add small step…" style="flex:1;padding:.55rem;border-radius:10px;border:1px solid rgba(0,0,0,.1)">
+            <button id="goal-add" class="btn btn-ghost">Add</button>
+          </div>
+          <ul id="goal-list" style="margin:0;padding-left:1rem"></ul>
+        </div>
+        <div class="card" data-tilt="6" data-reveal="up">
+          <h4>Mindfulness mini session</h4>
+          <p>2-min presence & self-compassion guidance.</p>
+          <button class="btn btn-ghost">Play</button>
+        </div>
+        <div class="card" data-tilt="6" data-reveal="up">
+          <h4>Productivity vs. Wellbeing</h4>
+          <p class="muted">Daily tip: “Schedule recovery like a meeting.”</p>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer>
     <p>© <span id="year"></span> PieceOfMind</p>
-    <nav class="footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
+    <nav class="footer-links"><a href="/app/templates/privacy.html">Privacy</a><a href="/app/templates/terms.html">Terms</a></nav>
   </footer>
 
-  <div class="toast-container"></div><div class="modal-container"></div><div class="drawer-container"></div>
-  <div class="fab">Relax Now</div>
+  <div class="toast-container"></div>
 
-  <script src="/static/js/app.js"></script>
-  <script src="/static/js/focus.js"></script>
+  <script src="../static/js/app.js?v=7"></script>
+  <script src="../static/js/effects.js?v=7"></script>
+  <script src="../static/js/focus.js?v=7"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
+<script src="../static/js/bg-clouds.js"></script>
+
+
 </body>
 </html>
