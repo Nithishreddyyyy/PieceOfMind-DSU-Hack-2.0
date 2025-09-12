@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Auth0 Login</title>
+</head>
+<body>
+    <h2>🔑 Auth0 Login Test</h2>
+
+    {% if user %}
+        <p>✅ Logged in as: <b>{{ user["name"] }}</b> ({{ user["email"] }})</p>
+        <a href="/logout">Logout</a>
+    {% else %}
+        <a href="/login">Login with Auth0</a>
+    {% endif %}
+</body>
+</html>
