@@ -1,0 +1,4 @@
+This dir is for the CV implication of this project 
+
+- First of all the web cam should constantly monitor eye movement , blinking rate , rubbing eyes , yawning and 
+stress / burnout symptoms and anxiety 

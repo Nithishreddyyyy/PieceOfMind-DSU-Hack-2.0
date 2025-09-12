@@ -16,6 +16,9 @@ html[data-theme="dark"]{
    --accent:#49b3ff;      /* primary accent */
   --surface:#101726;     /* slightly deeper */
   --surface-2:#172132;
+   --accent:#49b3ff;      /* primary accent */
+  --surface:#101726;     /* slightly deeper */
+  --surface-2:#172132;
   --text:#e8ecf8; --muted:#99a2b3; --accent:#7c6df4;
   --ok:#22d3a3; --warn:#f8d568; --danger:#ff6b6b;
   --sh-1:0 3px 12px rgba(0,0,0,.28);
@@ -186,6 +189,7 @@ section{padding:0 clamp(14px,4vw,40px)}
   .hero p{font-size:clamp(16px,1.4vw,20px)}
 }
 /* --- ultra-thin bars + sticky footer (overrides) --- */
+
 
 footer{ padding:6px clamp(14px,4vw,40px) }
 

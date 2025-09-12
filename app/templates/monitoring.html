@@ -4,20 +4,20 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PieceOfMind — Monitoring</title>
   <script>try{var s=JSON.parse(localStorage.getItem('pm:data:v1'))||{};document.documentElement.setAttribute('data-theme',s.theme||'dark');document.documentElement.setAttribute('data-reduced-motion',s.reducedMotion?'reduce':'no-preference');}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
-  <link rel="stylesheet" href="../static/css/style.css?v=8">
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
   <div class="thin-ribbon">Trimodal Sensing — choose a source<button class="ribbon-close" aria-label="Dismiss">✕</button></div>
   <div id="animated-bg" aria-hidden="true"></div>
 
   <header class="sticky-nav">
-    <h1 class="brand"><a href="/app/templates/index.html">PieceOfMind</a></h1>
+    <h1 class="brand"><a href="/">PieceOfMind</a></h1>
     <nav>
       <ul>
-        <li><a href="/app/templates/dashboard.html">Dashboard</a></li>
-        <li><a href="/app/templates/monitoring.html" class="active">Monitoring</a></li>
-        <li><a href="/app/templates/focus.html">Focus</a></li>
-        <li><a href="/app/templates/settings.html">Settings</a></li>
+  <li><a href="/dashboard">Dashboard</a></li>
+  <li><a href="/monitoring" class="active">Monitoring</a></li>
+  <li><a href="/focus">Focus</a></li>
+  <li><a href="/settings">Settings</a></li>
       </ul>
     </nav>
     <div class="header-actions"><button id="btn-logout" class="btn btn-ghost">Log out</button><button class="theme-toggle">🌓</button></div>
@@ -45,7 +45,7 @@
 
   <footer>
     <p>© <span id="year"></span> PieceOfMind</p>
-    <nav class="footer-links"><a href="/app/templates/privacy.html">Privacy</a><a href="/app/templates/terms.html">Terms</a></nav>
+    <nav class="footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
   </footer>
 
   <div class="toast-container"></div>
