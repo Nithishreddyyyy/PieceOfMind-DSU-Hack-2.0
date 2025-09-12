@@ -9,3 +9,6 @@ async def index(request: Request):
     # return "HI"
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/testdb")
+async def test():
+    return {"Message": "Hello world"}
