@@ -87,4 +87,3 @@ async def terms_alt():
 @app.get("/app/templates/testLogin.html")
 async def test_login_alt():
     return RedirectResponse(url="/testLogin", status_code=302)
-
