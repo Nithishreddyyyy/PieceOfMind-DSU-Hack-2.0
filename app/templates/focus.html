@@ -5,8 +5,58 @@
   <title>PieceOfMind — Focus</title>
   <script>try{var s=JSON.parse(localStorage.getItem('pm:data:v1'))||{};document.documentElement.setAttribute('data-theme',s.theme||'dark');document.documentElement.setAttribute('data-reduced-motion',s.reducedMotion?'reduce':'no-preference');}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
   <link rel="stylesheet" href="../static/css/style.css?v=7">
+  <style>
+/* tiny YT player */
+.yt-wrap{ margin-top:.6rem; }
+.yt-wrap iframe{
+  width:100%; height:180px; border:0; border-radius:12px; box-shadow:var(--sh-1);
+}
+
+/* 3-second page-wide fun effects */
+.fx{ position:fixed; inset:0; z-index:55; pointer-events:none; animation-duration:3s; animation-fill-mode:forwards; }
+.fx-rain{
+  background-image: repeating-linear-gradient( to bottom-left,
+    rgba(255,255,255,.08) 0 2px, transparent 2px 10px);
+  animation: rainFall 3s linear forwards;
+}
+@keyframes rainFall{
+  from{ transform: translateY(-20%) }
+  to  { transform: translateY(20%)  }
+}
+.fx-waves{
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(255,255,255,.06), transparent 40%),
+    radial-gradient(ellipse at 50% 110%, rgba(255,255,255,.04), transparent 35%),
+    radial-gradient(ellipse at 50% 130%, rgba(255,255,255,.08), transparent 45%);
+  animation: waveDrift 3s ease-in-out forwards;
+}
+@keyframes waveDrift{
+  0%{ transform: translateY(10px) }
+  50%{ transform: translateY(-6px) }
+  100%{ transform: translateY(12px) }
+}
+
+/* mini-session overlay */
+.ms-overlay{ position:fixed; inset:0; z-index:70; display:none; place-items:center;
+  background: color-mix(in srgb, var(--bg) 40%, rgba(0,0,0,.45)); }
+.ms-overlay.active{ display:grid; }
+.ms-card{ width:min(92vw,420px); background:var(--surface); border-radius:16px; padding:18px; text-align:center; box-shadow:var(--sh-3); }
+.ms-card .visual-ring{ --size:200px; margin-inline:auto; }
+.ms-time{ font-weight:800; font-size:1.2rem; margin:.6rem 0 .2rem; }
+</style>
+
 </head>
 <body>
+  <div id="miniSession" class="ms-overlay" aria-hidden="true">
+  <div class="ms-card">
+    <div id="msRing" class="visual-ring"></div>
+    <div class="ms-time" id="msTime">02:00</div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+      <button id="msEnd" class="btn btn-danger">End</button>
+    </div>
+  </div>
+</div>
+
   <div class="thin-ribbon">Need a reset? Try a 2-min breathe — in Focus below.<button class="ribbon-close" aria-label="Dismiss">✕</button></div>
   <div id="animated-bg" aria-hidden="true"></div>
 
@@ -28,62 +78,87 @@
       <h2 data-reveal="left">Focus</h2>
 
       <!-- STRESS -->
-      <h3 data-reveal="up">Stress</h3>
-      <div class="grid" data-magnetic>
-        <div class="card" id="card-stress" data-tilt="6" data-reveal="up">
-          <h4>Stress reduction game</h4>
-          <p>Breath-controlled bubble: exhale to shrink, inhale to grow.</p>
-          <a class="btn btn-primary" href="#" onclick="window.poom.toast.show('Game placeholder');return false;">Play</a>
-        </div>
-        <div class="card" data-tilt="6" data-reveal="up">
-          <h4>Box breathing</h4><p>Inhale 4 • Hold 4 • Exhale 4 • Hold 4 (×4)</p>
-          <button class="btn btn-ghost">Start</button>
-        </div>
-      </div>
+      <!-- STRESS -->
+<h3 data-reveal="up">Stress</h3>
+<div class="grid" data-magnetic>
+  <div class="card" id="card-stress" data-tilt="6" data-reveal="up">
+    <h4>Stress reduction game</h4>
+    <p>Breath-controlled bubble: exhale to shrink, inhale to grow.</p>
+    <a class="btn btn-primary" href="#" onclick="window.poom.toast.show('Game placeholder');return false;">Play</a>
+  </div>
+
+  <div class="card" data-tilt="6" data-reveal="up">
+    <h4>Box breathing</h4>
+    <p>Inhale 4 • Hold 4 • Exhale 4 • Hold 4 (×4)</p>
+
+    <!-- start button now controls the mini video -->
+    <button id="box-start" class="btn btn-ghost">Start</button>
+
+    <!-- tiny video guide (hidden until start) -->
+    <div id="box-yt-wrap" class="yt-wrap" hidden>
+      <iframe
+        id="box-yt"
+        title="Box breathing guide"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        referrerpolicy="strict-origin-when-cross-origin"
+        src=""
+      ></iframe>
+    </div>
+  </div>
+</div>
 
       <!-- ANXIETY -->
-      <h3 data-reveal="up">Anxiety</h3>
-      <div class="grid binaural" data-magnetic>
-        <div class="card" id="card-anxiety" data-tilt="6" data-reveal="up">
-          <h4>Delta/Alpha binaural beats</h4>
-          <audio controls preload="metadata" style="width:100%">
-            <source src="../static/audio/binaural.mp3" type="audio/mpeg">
-          </audio>
-        </div>
-        <div class="card" data-tilt="6" data-reveal="up">
-          <h4>Soothing soundscapes</h4>
-          <button class="btn btn-ghost">Play Rain</button>
-          <button class="btn btn-ghost">Play Waves</button>
-        </div>
-      </div>
+      <!-- ANXIETY -->
+<h3 data-reveal="up">Anxiety</h3>
+<div class="grid binaural" data-magnetic>
+  <div class="card" id="card-anxiety" data-tilt="6" data-reveal="up">
+    <h4>Delta/Alpha binaural beats</h4>
+    <audio controls preload="metadata" style="width:100%">
+      <source src="../static/audio/binaural.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <div class="card" data-tilt="6" data-reveal="up">
+    <h4>Soothing soundscapes</h4>
+    <button id="btn-rain"  class="btn btn-ghost">Play Rain</button>
+    <button id="btn-waves" class="btn btn-ghost">Play Waves</button>
+  </div>
+</div>
+
 
       <!-- BURNOUT -->
-      <h3 data-reveal="up">Burnout</h3>
-      <div class="grid" data-magnetic>
-        <div class="card" id="card-burnout" data-tilt="6" data-reveal="up">
-          <h4>Micro Break Reminders</h4>
-          <p>Gentle nudge every few minutes while you work.</p>
-          <button id="btn-microbreak" class="btn btn-primary">Enable Micro Break Reminders</button>
-        </div>
-        <div class="card" data-tilt="6" data-reveal="up">
-          <h4>Goal setting & tracking</h4>
-          <div class="badge">Break tasks into steps</div>
-          <div style="display:flex;gap:8px;margin:.5rem 0">
-            <input id="goal-input" type="text" placeholder="Add small step…" style="flex:1;padding:.55rem;border-radius:10px;border:1px solid rgba(0,0,0,.1)">
-            <button id="goal-add" class="btn btn-ghost">Add</button>
-          </div>
-          <ul id="goal-list" style="margin:0;padding-left:1rem"></ul>
-        </div>
-        <div class="card" data-tilt="6" data-reveal="up">
-          <h4>Mindfulness mini session</h4>
-          <p>2-min presence & self-compassion guidance.</p>
-          <button class="btn btn-ghost">Play</button>
-        </div>
-        <div class="card" data-tilt="6" data-reveal="up">
-          <h4>Productivity vs. Wellbeing</h4>
-          <p class="muted">Daily tip: “Schedule recovery like a meeting.”</p>
-        </div>
-      </div>
+      <!-- BURNOUT -->
+<h3 data-reveal="up">Burnout</h3>
+<div class="grid" data-magnetic>
+  <div class="card" id="card-burnout" data-tilt="6" data-reveal="up">
+    <h4>Micro Break Reminders</h4>
+    <p>Gentle nudge every few minutes while you work.</p>
+    <button id="btn-microbreak" class="btn btn-primary">Enable Micro Break Reminders</button>
+  </div>
+
+  <div class="card" data-tilt="6" data-reveal="up">
+    <h4>Goal setting & tracking</h4>
+    <div class="badge">Break tasks into steps</div>
+    <div style="display:flex;gap:8px;margin:.5rem 0">
+      <input id="goal-input" type="text" placeholder="Add small step…" style="flex:1;padding:.55rem;border-radius:10px;border:1px solid rgba(0,0,0,.1)">
+      <button id="goal-add" class="btn btn-ghost">Add</button>
+    </div>
+    <ul id="goal-list" style="margin:0;padding-left:1rem"></ul>
+  </div>
+
+  <div class="card" data-tilt="6" data-reveal="up">
+    <h4>Mindfulness mini session</h4>
+    <p>2-min presence & self-compassion guidance.</p>
+    <button id="mindful-play" class="btn btn-ghost">Play</button>
+  </div>
+
+  <div class="card" data-tilt="6" data-reveal="up">
+    <h4>Productivity vs. Wellbeing</h4>
+    <p id="tip-text" class="muted">Daily tip: “Schedule recovery like a meeting.”</p>
+    <button id="tip-generate" class="btn btn-ghost">Generate tip</button>
+  </div>
+</div>
+
     </section>
   </main>
 
