@@ -25,32 +25,45 @@
 
   <main>
     <section class="settings">
-      <h2 data-reveal="left">Settings</h2>
+  <h2>Settings</h2>
 
-      <div class="setting-row" data-reveal="up">
+  <div class="setting-grid">
+    <div class="setting-card">
+      <h3>Appearance</h3>
+      <div class="setting-row">
         <label for="sel-theme">Theme</label>
-        <select id="sel-theme"><option value="light">Light</option><option value="dark">Dark</option></select>
+        <select id="sel-theme">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
       </div>
-
-      <div class="setting-row" data-reveal="up">
+      <div class="setting-row">
         <label for="chk-reduced-motion">Reduced motion</label>
-        <input id="chk-reduced-motion" type="checkbox">
+        <input id="chk-reduced-motion" type="checkbox"/>
       </div>
+    </div>
 
-      <div class="setting-row" data-reveal="up">
+    <div class="setting-card">
+      <h3>Audio</h3>
+      <div class="setting-row">
         <label for="rng-ambience">Ambience volume</label>
-        <input id="rng-ambience" type="range" min="0" max="1" step="0.05">
+        <input id="rng-ambience" type="range" min="0" max="1" step="0.05"/>
       </div>
+    </div>
 
-      <div class="setting-row" data-reveal="up">
-        <button id="btn-clear" class="btn btn-danger">Clear local data</button>
-      </div>
-    </section>
+    <div class="setting-card">
+      <h3>Data</h3>
+      <p class="muted">Clear all local preferences and sessions from this browser.</p>
+      <button id="btn-clear" class="btn btn-danger">Clear local data</button>
+    </div>
+  </div>
+</section>
+
   </main>
 
   <footer>
     <p>© <span id="year"></span> PieceOfMind</p>
-    <nav class="footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
+    <nav class="footer-links"><a href="/app/templates/privacy.html">Privacy</a><a href="/app/templates/terms.html">Terms</a></nav>
   </footer>
 
   <div class="toast-container"></div>
