@@ -65,9 +65,9 @@ function initSmoothScroll() {
 
 // ---------- Header: active link ----------
 function markActiveNav() {
-  const current = location.pathname.split("/").pop() || "/";
+  const current = location.pathname;
   document.querySelectorAll("header nav a").forEach(a => {
-    const href = a.getAttribute("href").split("/").pop();
+    const href = a.getAttribute("href");
     a.classList.toggle("active", href === current);
   });
 }
