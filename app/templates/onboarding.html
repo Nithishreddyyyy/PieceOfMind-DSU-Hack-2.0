@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>PieceOfMind — Onboarding</title>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+  <header class="sticky-nav">
+    <h1 class="brand"><a href="/">PieceOfMind</a></h1>
+    <nav>
+      <ul>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/monitoring">Monitoring</a></li>
+        <li><a href="/focus">Focus</a></li>
+        <li><a href="/settings">Settings</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button id="btn-logout" class="btn btn-ghost">Log out</button>
+      <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="onboarding">
+      <h2>Onboarding</h2>
+      <div class="stepper">
+        <div class="step active">Step 1</div>
+        <div class="step">Step 2</div>
+        <div class="step">Step 3</div>
+        <div class="step">Step 4</div>
+        <div class="step">Step 5</div>
+      </div>
+
+      <div class="step-content">
+        <div class="step-1">
+          <h3>Preferences</h3>
+          <label><input type="checkbox"> EEG Metrics</label>
+          <label><input type="checkbox"> Typing/Tab/Scroll</label>
+          <label><input type="checkbox"> Webcam Eye-Blink</label>
+          <label><input type="checkbox"> Mic Energy</label>
+        </div>
+        <div class="step-2">
+          <h3>Consents</h3>
+          <label><input type="checkbox"> Camera</label>
+          <label><input type="checkbox"> Mic</label>
+          <label><input type="checkbox"> Smartwatch</label>
+          <label><input type="checkbox"> Anonymized Aggregation</label>
+        </div>
+        <div class="step-3">
+          <h3>Profile</h3>
+          <label>Age: <input type="number"/></label>
+          <label>Gender: <input type="text"/></label>
+          <label>Occupation: <input type="text"/></label>
+          <label>Sleep Time: <input type="time"/></label>
+          <label>Stress/Anxiety/Burnout: <input type="text"/></label>
+          <label>Emergency Contact: <input type="text"/></label>
+        </div>
+        <div class="step-4">
+          <h3>Pairing</h3>
+          <div class="signal-quality">Signal Quality Animation</div>
+          <button class="btn btn-primary">Connect Apple Watch</button>
+          <button class="btn btn-primary">Pair EEG</button>
+        </div>
+        <div class="step-5">
+          <h3>Calibration</h3>
+          <div class="calibration-bar">Calibration Bar</div>
+          <p>Hint of the moment</p>
+        </div>
+      </div>
+
+      <div class="step-buttons">
+        <button class="btn btn-ghost">Back</button>
+        <button class="btn btn-primary">Next</button>
+        <button class="btn btn-success">Finish</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> PieceOfMind</p>
+    <nav class="footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
+  </footer>
+
+  <div class="toast-container"></div>
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/onboarding.js"></script>
+</body>
+</html>
