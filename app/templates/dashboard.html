@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PieceOfMind - Dashboard</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <header class="sticky-nav">
+        <h1>PieceOfMind</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="onboarding.html">Onboarding</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="monitoring.html">Monitoring</a></li>
+                <li><a href="focus.html">Focus</a></li>
+                <li><a href="privacy.html">Privacy</a></li>
+                <li><a href="terms.html">Terms</a></li>
+            </ul>
+        </nav>
+        <button class="theme-toggle">Toggle Theme</button>
+    </header>
+    <main>
+        <section class="dashboard">
+            <h2>Today at a glance</h2>
+            <div class="status-strip">
+                <p>Status: <span class="status-text"></span></p>
+            </div>
+            <div class="gauges">
+                <div class="gauge">
+                    <h3>Strain</h3>
+                    <div class="circular-gauge" data-value="0.5"></div>
+                </div>
+                <div class="gauge">
+                    <h3>Drift</h3>
+                    <div class="circular-gauge" data-value="0.3"></div>
+                </div>
+            </div>
+            <div class="focus-windows">
+                <h3>Best Focus Windows</h3>
+                <div class="pills">
+                    <button class="pill">9:00 AM - 10:00 AM</button>
+                    <button class="pill">2:00 PM - 3:00 PM</button>
+                </div>
+            </div>
+            <div class="suggested-recovery">
+                <h3>Suggested Recovery</h3>
+                <button class="btn btn-primary">Mini Timer 1</button>
+                <button class="btn btn-primary">Mini Timer 2</button>
+            </div>
+            <div class="empty-state">
+                <p>Try your first Focus session today.</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 PieceOfMind</p>
+    </footer>
+    <div class="toast-container"></div>
+    <div class="modal-container"></div>
+    <div class="drawer-container"></div>
+    <div class="fab">Relax Now</div>
+    <script src="static/js/app.js"></script>
+</body>
+</html>
