@@ -1,49 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PieceOfMind — Terms</title>
-  <link rel="stylesheet" href="../static/css/style.css"/>
+  <script>try{var s=JSON.parse(localStorage.getItem('pm:data:v1'))||{};document.documentElement.setAttribute('data-theme',s.theme||'dark');document.documentElement.setAttribute('data-reduced-motion',s.reducedMotion?'reduce':'no-preference');}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+  <div class="thin-ribbon">Please read these terms<button class="ribbon-close" aria-label="Dismiss">✕</button></div>
+  <div id="animated-bg" aria-hidden="true"></div>
+
   <header class="sticky-nav">
     <h1 class="brand"><a href="/app/templates/index.html">PieceOfMind</a></h1>
     <nav>
       <ul>
-        <li><a href="../templates/dashboard.html">Dashboard</a></li>
-        <li><a href="../templates/monitoring.html">Monitoring</a></li>
-        <li><a href="../templates/focus.html">Focus</a></li>
-        <li><a href="../templates/settings.html">Settings</a></li>
+  <li><a href="/dashboard">Dashboard</a></li>
+  <li><a href="/monitoring">Monitoring</a></li>
+  <li><a href="/focus">Focus</a></li>
+  <li><a href="/settings">Settings</a></li>
       </ul>
     </nav>
-    <div class="header-actions">
-      <button id="btn-logout" class="btn btn-ghost">Log out</button>
-      <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
-    </div>
+    <div class="header-actions"><button class="theme-toggle">🌓</button></div>
   </header>
 
   <main>
-    <section class="terms">
-      <h2>Terms</h2>
-      <nav class="anchor-nav">
-        <ul>
-          <li><a href="#section1">Section 1</a></li>
-          <li><a href="#section2">Section 2</a></li>
-          <li><a href="#section3">Section 3</a></li>
-        </ul>
-      </nav>
-      <section id="section1"><h3>Section 1</h3><p>Content for section 1.</p></section>
-      <section id="section2"><h3>Section 2</h3><p>Content for section 2.</p></section>
-      <section id="section3"><h3>Section 3</h3><p>Content for section 3.</p></section>
+    <section class="terms" data-reveal="up">
+      <h2>Terms of Service</h2>
+      <h3>1. Acceptance</h3>
+      <p>By using PieceOfMind you agree to these Terms and our Privacy Policy.</p>
+
+      <h3>2. License</h3>
+      <p>We grant you a personal, non-transferable license to use the app. You may not reverse-engineer or resell the service.</p>
+
+      <h3>3. Health disclaimer</h3>
+      <p>PieceOfMind provides general wellbeing guidance and is not a medical device. For medical questions, consult a professional.</p>
+
+      <h3>4. User data & conduct</h3>
+      <p>You are responsible for your account and for complying with applicable laws. Don’t misuse sensors or attempt to access data you don’t own.</p>
+
+      <h3>5. Availability</h3>
+      <p>We strive for high availability but do not guarantee uninterrupted access.</p>
+
+      <h3>6. Liability</h3>
+      <p>To the maximum extent permitted by law, we are not liable for indirect or consequential damages.</p>
+
+      <h3>7. Termination</h3>
+      <p>You may stop using the service at any time. We may suspend accounts that violate these Terms.</p>
+
+      <h3>8. Changes</h3>
+      <p>We may update these Terms; continued use constitutes acceptance of the new Terms.</p>
+
+      <h3>9. Contact</h3>
+      <p>Questions? support@pieceofmind.example</p>
     </section>
   </main>
 
   <footer>
     <p>© <span id="year"></span> PieceOfMind</p>
-    <nav class="footer-links"><a href="/app/templates/privacy.html">Privacy</a><a href="/app/templates/terms.html" class="active">Terms</a></nav>
+    <nav class="footer-links"><a href="/app/templates/privacy.html">Privacy</a><a class="active" href="/app/templates/terms.html">Terms</a></nav>
   </footer>
 
   <div class="toast-container"></div>
-  <script src="../static/js/app.js"></script>
+
+  <script src="../static/js/app.js?v=7"></script>
+  <script src="../static/js/effects.js?v=7"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
+<script src="../static/js/bg-clouds.js"></script>
+
+
 </body>
 </html>

@@ -1,89 +1,113 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PieceOfMind — Home</title>
-  <link rel="stylesheet" href="/static/css/style.css"/>
+  <script>try{var s=JSON.parse(localStorage.getItem('pm:data:v1'))||{};document.documentElement.setAttribute('data-theme',s.theme||'dark');document.documentElement.setAttribute('data-reduced-motion',s.reducedMotion?'reduce':'no-preference');}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
+  <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
+  <div class="thin-ribbon">Now with Trimodal Sensing → <a href="../monitoring">Try Monitoring</a><button class="ribbon-close" aria-label="Dismiss">✕</button></div>
+  <div id="animated-bg" aria-hidden="true"></div>
+
   <header class="sticky-nav">
     <h1 class="brand"><a href="/">PieceOfMind</a></h1>
     <nav>
       <ul>
-        <li><a href="/" class="active">Home</a></li>
-        <li class="auth-signed-in hidden"><a href="/dashboard">Dashboard</a></li>
-        <li class="auth-signed-in hidden"><a href="/monitoring">Monitoring</a></li>
-        <li class="auth-signed-in hidden"><a href="/focus">Focus</a></li>
-        <li class="auth-signed-in hidden"><a href="/settings">Settings</a></li>
+        <!-- removed "Home" per request -->
+  <li><a href="/dashboard">Dashboard</a></li>
+  <li><a href="/monitoring">Monitoring</a></li>
+  <li><a href="/focus">Focus</a></li>
+  <li><a href="/settings">Settings</a></li>
       </ul>
     </nav>
     <div class="header-actions">
-      <button id="btn-signin" class="btn btn-ghost auth-signed-out">Log in</button>
-      <button id="btn-signup" class="btn btn-primary auth-signed-out">Sign up</button>
-      <button id="btn-logout" class="btn btn-ghost auth-signed-in hidden">Log out</button>
+      <button id="btn-signin" class="btn btn-ghost">Log in</button>
+      <button id="btn-signup" class="btn btn-primary">Sign up</button>
       <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
     </div>
   </header>
 
   <main>
     <section class="hero">
-      <video autoplay muted loop playsinline poster="/static/img/hero-poster.jpg">
-        <source src="/static/video/hero.mp4" type="video/mp4"/>
-        <source src="/static/video/hero.webm" type="video/webm"/>
+      <video autoplay muted loop playsinline poster="../static/img/hero-poster.jpg">
+        <source src="../static/video/hero.mp4" type="video/mp4">
       </video>
-      <div class="hero-content">
+      <div class="hero-content" data-parallax data-parallax-speed="0.18" data-reveal="zoom">
         <h2>Calm. Clarity. Control.</h2>
-        <p>Track stress & focus in real time with wearables, webcam and keyboard cadence.</p>
-        <div class="hero-cta">
-          <button id="btn-signup" class="btn btn-primary auth-signed-out">Get started</button>
-          <a href="/monitoring" class="btn btn-ghost">Live Monitoring</a>
-          <button class="pill video-toggle">Pause Video</button>
+        <p>Signal-driven focus & wellbeing — private by design.</p>
+        <div class="hero-cta" data-magnetic>
+          <!-- removed "Get started" & video toggle -->
+          <a class="btn btn-ghost" href="/app/templates/monitoring.html">See Monitoring</a>
         </div>
       </div>
     </section>
 
-    <section class="carousel-section">
-      <h2>Screenshots &amp; Demo</h2>
+    <!-- Video demo area placed ABOVE screenshots -->
+    <section class="video-demo" data-reveal="up">
+      <h2>Product demo</h2>
+      <div class="card" data-tilt="4">
+        <video controls preload="metadata" style="width:100%;border-radius:14px;box-shadow:var(--sh-2)">
+          <source src="../static/video/demo.mp4" type="video/mp4">
+        </video>
+      </div>
+    </section>
+
+    <section class="carousel-section" data-reveal="up">
+      <h2>Screenshots</h2>
       <div class="carousel">
-        <button class="carousel-arrow prev" aria-label="Previous slide">‹</button>
+        <button class="carousel-arrow prev" aria-label="Prev">‹</button>
         <div class="carousel-track">
           <div class="carousel-slide"><img src="/static/img/dashboard.png" alt="Dashboard"></div>
           <div class="carousel-slide"><img src="/static/img/monitoring.png" alt="Monitoring"></div>
           <div class="carousel-slide"><img src="/static/img/focus.png" alt="Focus"></div>
         </div>
-        <button class="carousel-arrow next" aria-label="Next slide">›</button>
-        <div class="carousel-dots">
-          <button class="carousel-dot active" aria-label="Slide 1"></button>
-          <button class="carousel-dot" aria-label="Slide 2"></button>
-          <button class="carousel-dot" aria-label="Slide 3"></button>
-        </div>
+        <button class="carousel-arrow next" aria-label="Next">›</button>
+        <div class="carousel-dots"><button class="carousel-dot active"></button><button class="carousel-dot"></button><button class="carousel-dot"></button></div>
       </div>
     </section>
 
-    <section class="about-us">
+    <section class="why" data-reveal="up">
       <h2>Why PieceOfMind</h2>
+      <div class="feature-cards" data-magnetic>
+        <div class="card" data-tilt="6"><h4>Scientific</h4><p>Neural & behavioral signals fused for balanced insights.</p><span class="badge">Validated heuristics</span></div>
+        <div class="card" data-tilt="6"><h4>Practical</h4><p>Quick recovery, guided focus, actionable dashboards.</p><span class="badge">Built for flow</span></div>
+        <div class="card" data-tilt="6"><h4>Private</h4><p>Local-first where possible. You own your data.</p><span class="badge">Privacy by default</span></div>
+      </div>
+    </section>
+
+    <section class="testimonials" data-reveal="up">
+      <h2>What people say</h2>
+      <div class="testimonials">
+        <div class="testimonial"><p>“The only app that nudges me at the right moment.”</p><div class="author"><img src="../static/img/ava1.png" width="28" height="28" style="border-radius:50%"><span>Alex • PM</span></div></div>
+        <div class="testimonial"><p>“Focus windows are scarily accurate.”</p><div class="author"><img src="../static/img/ava2.png" width="28" height="28" style="border-radius:50%"><span>Priya • Researcher</span></div></div>
+        <div class="testimonial"><p>“Feels like a calm OS layer for my day.”</p><div class="author"><img src="../static/img/ava3.png" width="28" height="28" style="border-radius:50%"><span>Diego • Designer</span></div></div>
+      </div>
+    </section>
+
+    <section class="about-us" data-reveal="up">
+      <h2>About us</h2>
       <div class="about-tiles">
-        <div class="about-tile"><h3>Scientific</h3><p>Signal-based insights that balance rigor and privacy.</p></div>
-        <div class="about-tile"><h3>Practical</h3><p>Guided focus, quick recovery, actionable dashboards.</p></div>
-        <div class="about-tile"><h3>Private</h3><p>Local processing where possible. You’re in control.</p></div>
+        <div class="card"><h4>Mission</h4><p>Help knowledge workers protect focus and wellbeing with respectful sensing.</p></div>
+        <div class="card"><h4>Approach</h4><p>Trimodal signals, interpretable heuristics, and gentle guidance.</p></div>
+        <div class="card"><h4>Values</h4><p>Privacy, clarity, kindness — in product and practice.</p></div>
       </div>
     </section>
   </main>
 
   <footer>
     <p>© <span id="year"></span> PieceOfMind</p>
-    <nav class="footer-links">
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
-    </nav>
+    <nav class="footer-links"><a href="/app/templates/privacy.html">Privacy</a><a href="/app/templates/terms.html">Terms</a></nav>
   </footer>
 
   <div class="toast-container"></div>
-  <div class="modal-container"></div>
-  <div class="drawer-container"></div>
-  <div class="fab">Relax Now</div>
 
-  <script src="/static/js/app.js"></script>
+  <script src="../static/js/app.js?v=7"></script>
+  <script src="../static/js/effects.js?v=7"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
+<script src="../static/js/bg-clouds.js"></script>
+
+
 </body>
 </html>

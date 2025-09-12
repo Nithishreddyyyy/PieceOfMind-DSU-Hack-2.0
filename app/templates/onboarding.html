@@ -6,14 +6,20 @@
   <link rel="stylesheet" href="/static/css/style.css"/>
 </head>
 <body>
+  <div id="animated-bg" aria-hidden="true"></div>
+  <div class="thin-ribbon" data-reveal="fade">
+  New: Live EEG stress spikes & keyboard cadence! <a href="/monitoring">See Monitoring</a>
+  <button class="ribbon-close" aria-label="Dismiss">✕</button>
+</div>
+
   <header class="sticky-nav">
-    <h1 class="brand"><a href="/">PieceOfMind</a></h1>
+    <h1 class="brand"><a href="/app/templates/index.html">PieceOfMind</a></h1>
     <nav>
       <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/monitoring">Monitoring</a></li>
-        <li><a href="/focus">Focus</a></li>
-        <li><a href="/settings">Settings</a></li>
+  <li><a href="/dashboard">Dashboard</a></li>
+  <li><a href="/monitoring">Monitoring</a></li>
+  <li><a href="/focus">Focus</a></li>
+  <li><a href="/settings">Settings</a></li>
       </ul>
     </nav>
     <div class="header-actions">
@@ -26,11 +32,7 @@
     <section class="onboarding">
       <h2>Onboarding</h2>
       <div class="stepper">
-        <div class="step active">Step 1</div>
-        <div class="step">Step 2</div>
-        <div class="step">Step 3</div>
-        <div class="step">Step 4</div>
-        <div class="step">Step 5</div>
+        <div class="step active">Step 1</div><div class="step">Step 2</div><div class="step">Step 3</div><div class="step">Step 4</div><div class="step">Step 5</div>
       </div>
 
       <div class="step-content">
@@ -84,7 +86,13 @@
   </footer>
 
   <div class="toast-container"></div>
-  <script src="/static/js/app.js"></script>
-  <script src="/static/js/onboarding.js"></script>
+
+  <script src="../static/js/app.js"></script>
+  <script src="../static/js/onboarding.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
+<script src="../static/js/bg-clouds.js"></script>
+
+
 </body>
 </html>

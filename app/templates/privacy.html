@@ -1,49 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PieceOfMind — Privacy</title>
-  <link rel="stylesheet" href="../static/css/style.css"/>
+  <script>try{var s=JSON.parse(localStorage.getItem('pm:data:v1'))||{};document.documentElement.setAttribute('data-theme',s.theme||'dark');document.documentElement.setAttribute('data-reduced-motion',s.reducedMotion?'reduce':'no-preference');}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+  <div class="thin-ribbon">We believe privacy is a feature<button class="ribbon-close" aria-label="Dismiss">✕</button></div>
+  <div id="animated-bg" aria-hidden="true"></div>
+
   <header class="sticky-nav">
     <h1 class="brand"><a href="/app/templates/index.html">PieceOfMind</a></h1>
     <nav>
       <ul>
-        <li><a href="../templates/dashboard.html">Dashboard</a></li>
-        <li><a href="../templates/monitoring.html">Monitoring</a></li>
-        <li><a href="../templates/focus.html">Focus</a></li>
-        <li><a href="../templates/settings.html">Settings</a></li>
+  <li><a href="/dashboard">Dashboard</a></li>
+  <li><a href="/monitoring">Monitoring</a></li>
+  <li><a href="/focus">Focus</a></li>
+  <li><a href="/settings">Settings</a></li>
       </ul>
     </nav>
-    <div class="header-actions">
-      <button id="btn-logout" class="btn btn-ghost">Log out</button>
-      <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
-    </div>
+    <div class="header-actions"><button class="theme-toggle">🌓</button></div>
   </header>
 
   <main>
-    <section class="privacy">
-      <h2>Privacy</h2>
-      <nav class="anchor-nav">
-        <ul>
-          <li><a href="#section1">Section 1</a></li>
-          <li><a href="#section2">Section 2</a></li>
-          <li><a href="#section3">Section 3</a></li>
-        </ul>
-      </nav>
-      <section id="section1"><h3>Section 1</h3><p>Content for section 1.</p></section>
-      <section id="section2"><h3>Section 2</h3><p>Content for section 2.</p></section>
-      <section id="section3"><h3>Section 3</h3><p>Content for section 3.</p></section>
+    <section class="privacy" data-reveal="up">
+      <h2>Privacy Policy</h2>
+      <p>Last updated: <strong>2025-01-01</strong></p>
+
+      <h3>1. What we collect</h3>
+      <p>With your consent, we may process: EEG heuristics, keyboard cadence, webcam fatigue signals, and app usage. Raw media is not uploaded; derived metrics are used for on-device guidance whenever possible.</p>
+
+      <h3>2. How we use data</h3>
+      <ul>
+        <li>To compute focus windows, stress/drift gauges, and gentle recommendations.</li>
+        <li>To improve the product in aggregate (opt-in only).</li>
+      </ul>
+
+      <h3>3. Your control</h3>
+      <ul>
+        <li>Toggle sensors in Monitoring any time.</li>
+        <li>Delete local data in Settings → “Clear local data”.</li>
+        <li>Request export or deletion by contacting support@pieceofmind.example.</li>
+      </ul>
+
+      <h3>4. Storage & retention</h3>
+      <p>Data is stored locally in your browser or device. If cloud features are enabled in the future, they will be opt-in and end-to-end encrypted.</p>
+
+      <h3>5. Third-party services</h3>
+      <p>We use essential infrastructure (e.g., CDN) that does not profile users. No ads. No selling of personal data. Ever.</p>
+
+      <h3>6. Children</h3>
+      <p>PieceOfMind is not intended for children under 13.</p>
+
+      <h3>7. Changes</h3>
+      <p>We will update this page and highlight material changes in the app.</p>
     </section>
   </main>
 
   <footer>
     <p>© <span id="year"></span> PieceOfMind</p>
-    <nav class="footer-links"><a href="/app/templates/privacy.html" class="active">Privacy</a><a href="/app/templates/terms.html">Terms</a></nav>
+    <nav class="footer-links"><a class="active" href="/app/templates/privacy.html">Privacy</a><a href="/app/templates/terms.html">Terms</a></nav>
   </footer>
 
   <div class="toast-container"></div>
-  <script src="../static/js/app.js"></script>
+
+  <script src="../static/js/app.js?v=7"></script>
+  <script src="../static/js/effects.js?v=7"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
+<script src="../static/js/bg-clouds.js"></script>
+
+
 </body>
 </html>
