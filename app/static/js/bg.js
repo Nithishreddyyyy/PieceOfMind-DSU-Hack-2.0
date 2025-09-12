@@ -1,60 +1,70 @@
-// Theme-aware VANTA CLOUDS (daylight for light; night sky for dark)
+/* theme-aware CLOUDS with stronger light-mode contrast */
 (function () {
-  const host = document.getElementById("animated-bg");
-  if (!host) return;
+  const el = document.getElementById("animated-bg");
+  if (!el) return;
 
   let effect = null;
 
-  const reduced = () =>
+  const palettes = {
+    light: {
+      skyColor: 0x98ccff,          // deeper blue so clouds stand out
+      cloudColor: 0xffffff,        // bright clouds
+      cloudShadowColor: 0x6ea7ff,  // cool, visible shadow
+      sunColor: 0xfff0b0,
+      sunGlareColor: 0xffffff,
+      sunlightColor: 0xfff4c2
+    },
+    dark: {
+      skyColor: 0x0b1428,          // night navy
+      cloudColor: 0x2b3a55,        // blue-gray clouds
+      cloudShadowColor: 0x0a0f1a,
+      sunColor: 0x86e3ff,
+      sunGlareColor: 0x5cc8ff,
+      sunlightColor: 0x3aa9ff
+    }
+  };
+
+  const prefersReduced = () =>
     (document.documentElement.getAttribute("data-reduced-motion") || "") === "reduce";
 
-  function colors() {
-    const dark = (document.documentElement.getAttribute("data-theme") || "light") === "dark";
-    if (dark) {
-      return {
-        backgroundColor: 0x0b1020, // night
-        skyColor: 0x0b1020,
-        cloudColor: 0x3b4252,     // dark clouds
-        cloudShadowColor: 0x111827
-      };
+  function start() {
+    if (prefersReduced()) {
+      try { effect?.destroy?.(); } catch {}
+      el.removeAttribute("data-variant");
+      return;
     }
-    return {
-      backgroundColor: 0xf6f7fb, // daylight
-      skyColor: 0xcfe9ff,
-      cloudColor: 0xffffff,
-      cloudShadowColor: 0xa0aec0
-    };
-  }
-
-  function init() {
-    if (reduced()) { try { effect?.destroy?.(); } catch{}; return; }
     if (!window.VANTA || !window.VANTA.CLOUDS) return;
 
-    const c = colors();
-    try {
-      effect?.destroy?.();
-      effect = window.VANTA.CLOUDS({
-        el: "#animated-bg",
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.0,
-        minWidth: 200.0,
-        speed: 1.10,
-        skyColor: c.skyColor,
-        cloudColor: c.cloudColor,
-        cloudShadowColor: c.cloudShadowColor,
-        backgroundColor: c.backgroundColor
-      });
-    } catch {}
+    const theme = document.documentElement.getAttribute("data-theme") || "dark";
+    const p = palettes[theme];
+
+    try { effect?.destroy?.(); } catch {}
+    effect = window.VANTA.CLOUDS({
+      el: "#animated-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.0,
+      minWidth: 200.0,
+      speed: 1.10,
+      backgroundAlpha: 0.0,
+      skyColor: p.skyColor,
+      cloudColor: p.cloudColor,
+      cloudShadowColor: p.cloudShadowColor,
+      sunColor: p.sunColor,
+      sunGlareColor: p.sunGlareColor,
+      sunlightColor: p.sunlightColor
+    });
+
+    /* mark which variant so CSS can add a visibility boost in light mode */
+    el.setAttribute("data-variant", theme);
   }
 
-  // Re-init on theme toggle
-  const mo = new MutationObserver(init);
+  const mo = new MutationObserver(start);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme","data-reduced-motion"] });
 
-  if (document.readyState !== "loading") init();
-  else document.addEventListener("DOMContentLoaded", init);
+  if (document.readyState !== "loading") start();
+  else document.addEventListener("DOMContentLoaded", start);
 
   window.addEventListener("beforeunload", () => { try { effect?.destroy?.(); } catch {} });
 })();

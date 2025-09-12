@@ -10,9 +10,12 @@
   --sh-1:0 3px 12px rgba(16,24,40,.08);
   --sh-2:0 8px 22px rgba(16,24,40,.12);
   --sh-3:0 18px 64px rgba(16,24,40,.16);
+  --accent:#5b7cfa;
 }
 html[data-theme="dark"]{
-  --bg:#0b1020; --surface:#12182b; --surface-2:#1a2138;
+   --accent:#49b3ff;      /* primary accent */
+  --surface:#101726;     /* slightly deeper */
+  --surface-2:#172132;
   --text:#e8ecf8; --muted:#99a2b3; --accent:#7c6df4;
   --ok:#22d3a3; --warn:#f8d568; --danger:#ff6b6b;
   --sh-1:0 3px 12px rgba(0,0,0,.28);
@@ -183,9 +186,7 @@ section{padding:0 clamp(14px,4vw,40px)}
   .hero p{font-size:clamp(16px,1.4vw,20px)}
 }
 /* --- ultra-thin bars + sticky footer (overrides) --- */
-.thin-ribbon{ height:12px; font-size:11px }
-.sticky-nav{ padding:3px clamp(14px,4vw,40px) }
-.sticky-nav.compact{ padding:2px clamp(14px,4vw,40px) }
+
 footer{ padding:6px clamp(14px,4vw,40px) }
 
 /* Pin footer without changing layout flow */
@@ -199,3 +200,221 @@ main{ flex:1 }
 /* Monitoring spacing only (no placement change) */
 .trimodal .pills{ display:flex; gap:12px; flex-wrap:wrap }
 #sensor-panel{ margin-top:16px }
+/* animated background still as a fallback gradient when Vanta is off */
+#animated-bg{
+  position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(1100px 700px at 18% 12%, rgba(124,109,244,.00), transparent 60%),
+    radial-gradient(900px 600px at 78% 18%, rgba(91,124,250,.00), transparent 60%),
+    linear-gradient(180deg, var(--bg), var(--bg));
+  animation:bg-pan 18s ease-in-out infinite;
+}
+
+/* footer at bottom with thin ribbons */
+html,body{height:100%}
+body{min-height:100vh; display:flex; flex-direction:column;}
+main{flex:1 0 auto}
+footer{flex-shrink:0; padding:10px clamp(14px,4vw,40px);} /* already thin */
+
+
+/* Settings — polished cards */
+.settings{max-width:980px;margin:0 auto}
+.settings h2{margin-bottom:8px}
+.setting-grid{
+  display:grid; gap:16px; margin-top:10px;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+}
+.setting-card{
+  position:relative;
+  background:var(--surface);
+  border-radius:16px;
+  padding:16px;
+  box-shadow:var(--sh-1);
+  overflow:hidden;
+}
+.setting-card::after{ /* subtle animated border glow */
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:conic-gradient(from 180deg, color-mix(in srgb, var(--accent) 36%, transparent), transparent 30% 70%, color-mix(in srgb, var(--accent) 36%, transparent));
+  opacity:.0; transition:opacity .3s ease;
+}
+.setting-card:hover::after{opacity:.35; filter:blur(18px)}
+.setting-row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:.4rem 0}
+
+/* make inputs feel native/pro */
+#sel-theme, #rng-ambience{
+  accent-color: var(--accent);
+}
+#sel-theme{
+  background:var(--surface-2); color:var(--text); border:1px solid color-mix(in srgb, var(--muted) 28%, transparent);
+  border-radius:10px; padding:.45rem .65rem;
+}
+#chk-reduced-motion{
+  inline-size: 1.25rem; block-size: 1.25rem;
+}
+#btn-clear{box-shadow:var(--sh-2)}
+.about-us .about-grid{
+  display:grid; gap:16px;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+}
+.card.lift{
+  background:var(--surface);
+  border-radius:16px;
+  padding:16px;
+  box-shadow:var(--sh-1);
+  transform:translateY(0) scale(1);
+  transition:transform .22s ease, box-shadow .22s ease;
+}
+.card.lift:hover{ transform:translateY(-4px) scale(1.01); box-shadow:var(--sh-2); }
+.card.shimmer{
+  position:relative; overflow:hidden;
+}
+.card.shimmer::before{
+  content:""; position:absolute; inset:-1px; border-radius:18px; pointer-events:none;
+  background:linear-gradient(120deg,
+    transparent 0% 35%,
+    color-mix(in srgb, var(--accent) 30%, transparent) 45%,
+    transparent 60% 100%);
+  transform:translateX(-60%);
+  animation:shimmer 3s linear infinite;
+  opacity:.6;
+}
+@keyframes shimmer{
+  0%{transform:translateX(-60%)}
+  100%{transform:translateX(60%)}
+}
+/* opt-in: add class="floaty" on tiles you want subtly animated */
+.floaty{
+  will-change:transform;
+  animation:floaty 6s ease-in-out infinite;
+}
+@keyframes floaty{
+  0%,100%{ transform:translateY(0) }
+  50%{ transform:translateY(-4px) }
+}
+
+/* micro-tilt on hover for all .card/.gauge without changing grid sizes */
+.card:hover, .gauge:hover{
+  transform:translateY(-3px) rotateX(.2deg) rotateY(.2deg);
+}
+/* monitoring spacing when a modality is selected */
+.monitoring .modality-panel{ margin-top:18px }
+.monitoring .modality-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px }
+.monitoring .modality-hint{ color:var(--muted); margin-top:6px }
+/* ---------- Universal Glaze / Shine ---------- */
+@keyframes glaze-sweep{
+  0%   { transform: translateX(-120%) rotate(18deg); }
+  100% { transform: translateX(120%)  rotate(18deg); }
+}
+
+/* opt-in list of “card-like” surfaces already in your UI */
+.card, .gauge, .setting-card, .testimonial,
+.feature-cards > *, .about-tiles > *, .testimonials > *,
+.timeline-row, .carousel, .dashboard .gauges .gauge,
+.focus .grid > .card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;           /* so the shine doesn’t bleed */
+}
+
+/* the moving diagonal shine */
+.card::before, .gauge::before, .setting-card::before, .testimonial::before,
+.feature-cards > *::before, .about-tiles > *::before, .testimonials > *::before,
+.timeline-row::before, .carousel::before, .dashboard .gauges .gauge::before,
+.focus .grid > .card::before {
+  content:"";
+  position:absolute; inset:-20% -60% -20% -60%;
+  background:
+    linear-gradient(100deg,
+      transparent 0 45%,
+      color-mix(in srgb, #fff 55%, var(--accent)) 49%,
+      color-mix(in srgb, #fff 65%, var(--accent)) 51%,
+      transparent 55% 100%);
+  opacity:.28;
+  filter: blur(2px);
+  animation: glaze-sweep 5.8s linear infinite;
+  pointer-events:none;
+}
+
+/* tone for dark vs light */
+html[data-theme="dark"] .card::before,
+html[data-theme="dark"] .gauge::before,
+html[data-theme="dark"] .setting-card::before,
+html[data-theme="dark"] .testimonial::before,
+html[data-theme="dark"] .feature-cards > *::before,
+html[data-theme="dark"] .about-tiles > *::before,
+html[data-theme="dark"] .testimonials > *::before,
+html[data-theme="dark"] .timeline-row::before,
+html[data-theme="dark"] .carousel::before,
+html[data-theme="dark"] .dashboard .gauges .gauge::before,
+html[data-theme="dark"] .focus .grid > .card::before{
+  background:
+    linear-gradient(100deg,
+      transparent 0 45%,
+      color-mix(in srgb, var(--accent) 40%, #ffffff) 49%,
+      color-mix(in srgb, var(--accent) 60%, #ffffff) 51%,
+      transparent 55% 100%);
+  opacity:.22;
+}
+
+/* Reduced motion => no glaze sweep */
+html[data-reduced-motion="reduce"] .card::before,
+html[data-reduced-motion="reduce"] .gauge::before,
+html[data-reduced-motion="reduce"] .setting-card::before,
+html[data-reduced-motion="reduce"] .testimonial::before,
+html[data-reduced-motion="reduce"] .feature-cards > *::before,
+html[data-reduced-motion="reduce"] .about-tiles > *::before,
+html[data-reduced-motion="reduce"] .testimonials > *::before,
+html[data-reduced-motion="reduce"] .timeline-row::before,
+html[data-reduced-motion="reduce"] .carousel::before,
+html[data-reduced-motion="reduce"] .dashboard .gauges .gauge::before,
+html[data-reduced-motion="reduce"] .focus .grid > .card::before{
+  animation:none;
+  opacity:.12;
+}
+/* Light-mode cloud visibility boost (subtle multiply/tint) */
+#animated-bg{isolation:isolate}
+#animated-bg[data-variant="light"]::after{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:-1;
+  background:
+    radial-gradient(1200px 900px at 15% 8%, rgba(122,174,255,.35), transparent 60%),
+    radial-gradient(1100px 800px at 80% 14%, rgba(122,174,255,.28), transparent 60%);
+  mix-blend-mode:multiply;        /* darken the sky so white clouds pop */
+}
+/* swap purple accent → night-sky blue */
+html[data-theme="dark"]{
+  --accent:#49b3ff;        /* primary brand in dark */
+  --surface:#0f1627;       /* deeper card surface */
+  --surface-2:#162035;
+}
+
+/* richer cards in dark */
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .gauge,
+html[data-theme="dark"] .setting-card,
+html[data-theme="dark"] .testimonial,
+html[data-theme="dark"] .timeline-row{
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 92%, transparent), color-mix(in srgb, var(--surface) 100%, transparent));
+  box-shadow: 0 12px 36px rgba(0,10,24,.35);
+}
+
+/* buttons look better with the new blue */
+html[data-theme="dark"] .btn-primary{ background: var(--accent); color:#fff; }
+/* header sheen */
+@keyframes ribbon-sheen{ 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+.sticky-nav{ position:sticky; top:0; overflow:hidden; }
+.sticky-nav::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background: linear-gradient(110deg,
+    transparent 0 40%,
+    color-mix(in srgb, var(--accent) 40%, #fff) 50%,
+    transparent 60% 100%);
+  opacity:.22;
+  transform:translateX(-100%);
+  animation:ribbon-sheen 6s linear infinite;
+}
+.sticky-nav.compact::after{opacity:.18}
+
+/* keep both bars thin (as you requested before) */
+.sticky-nav{padding:24px clamp(14px,4vw,40px)}
+.sticky-nav.compact{padding:4px clamp(14px,4vw,40px)}
