@@ -1,7 +1,7 @@
 // ==================== PieceOfMind Core (App Shell) ====================
 // Event bus • local storage store • toasts • theme/reduced-motion • auth stubs
 // header/nav activation • smooth scrolling • carousel • gauges • demo stream
-// Onboarding gating (only after first sign-up) • Settings hooks
+// Onboarding gating (optional notice, no forced redirect) • Settings hooks
 // ======================================================================
 
 window.poom = window.poom || {};
@@ -42,7 +42,6 @@ function initThemeAndMotion() {
   const s = load();
   applyTheme(s.theme || "light");
   applyMotionPref(!!s.reducedMotion);
-  // settings toggles (if present)
   const themeToggle = document.querySelector(".theme-toggle");
   themeToggle?.addEventListener("click", () => {
     const cur = document.documentElement.getAttribute("data-theme") || "light";
@@ -66,7 +65,7 @@ function initSmoothScroll() {
 
 // ---------- Header: active link ----------
 function markActiveNav() {
-  const current = location.pathname.split("/").pop() || "/app/templates/index.html";
+  const current = location.pathname.split("/").pop() || "/";
   document.querySelectorAll("header nav a").forEach(a => {
     const href = a.getAttribute("href").split("/").pop();
     a.classList.toggle("active", href === current);
@@ -74,18 +73,9 @@ function markActiveNav() {
 }
 
 // ---------- Auth (client-only demo) ----------
-/*
-  State shape:
-  {
-    user: { id, name } | undefined,
-    hasOnboarded: boolean,
-    needsOnboarding: boolean   // set true only when the user signs up first time
-  }
-*/
 function doSignIn() {
   patch(st => {
     st.user = st.user || { id: "demo-user", name: "You" };
-    // Keep hasOnboarded if it existed; do NOT set needsOnboarding here.
     if (st.hasOnboarded !== true && st.needsOnboarding !== true) st.needsOnboarding = false;
     return st;
   });
@@ -96,50 +86,45 @@ function doSignIn() {
 function doSignUp() {
   patch(st => {
     st.user = { id: "demo-user", name: "You" };
-    st.needsOnboarding = true;   // <-- onboarding only after sign-up
+    st.needsOnboarding = true;   // onboarding flag only, no redirect
     return st;
   });
   window.poom.toast.show("Welcome! Let’s personalize things.");
-  // Gate: redirect to onboarding right away
-  location.href = "/app/templates/onboarding.html";
+  refreshAuthUI();
+  // NOTE: no redirect — let user click onboarding manually
 }
 
 function doSignOut() {
   patch(st => {
     delete st.user;
-    // Keep hasOnboarded persisted — the next sign-in won’t show onboarding again.
     return st;
   });
   window.poom.toast.show("Signed out");
   refreshAuthUI();
-  location.href = "/app/templates/index.html";
+  // NOTE: no redirect — stays on current page
 }
 
 function refreshAuthUI() {
   const s = load();
   const authed = !!s.user;
-  // Hide/show auth buttons
   document.querySelectorAll(".auth-signed-out").forEach(el => el.classList.toggle("hidden", authed));
   document.querySelectorAll(".auth-signed-in").forEach(el => el.classList.toggle("hidden", !authed));
-  // Hide onboarding nav link if already onboarded
   const onbLink = document.querySelector('header nav a[href="/onboarding.html"]');
   if (onbLink) onbLink.classList.toggle("hidden", !!s.hasOnboarded);
-  // Show settings when signed in
   const settingsLink = document.querySelector('header nav a[href="/settings.html"]');
   settingsLink?.classList.toggle("hidden", !authed);
 }
 
-// Gate: send users who *need* onboarding to it (but only after sign-up)
+// Gate: instead of redirect, just show a toast reminder
 function enforceOnboardingGate() {
   const s = load();
-  const path = location.pathname;
   const needs = !!s.needsOnboarding;
-  if (needs && !/onboarding\.html$/i.test(path)) {
-    location.replace("/app/templates/onboarding.html");
+  if (needs) {
+    window.poom.toast.show("Onboarding available in menu.", "info");
   }
 }
 
-// Wire header auth buttons (present on all pages)
+// Wire header auth buttons
 function initHeaderAuthButtons() {
   document.getElementById("btn-signin")?.addEventListener("click", doSignIn);
   document.getElementById("btn-signup")?.addEventListener("click", doSignUp);
@@ -178,7 +163,7 @@ function renderGauges() {
 }
 window.poom.renderGauges = renderGauges;
 
-// ---------- Demo Stream (strain/drift/fatigue) ----------
+// ---------- Demo Stream ----------
 function startDemoStream() {
   setInterval(() => {
     const strain = Math.random();
@@ -214,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
   markActiveNav();
   initHeaderAuthButtons();
   refreshAuthUI();
-  enforceOnboardingGate(); // must be before other page-specific init
+  enforceOnboardingGate(); // now only shows info toast
   initCarousel();
   initHeroVideoToggle();
   initFab();
@@ -225,4 +210,12 @@ document.addEventListener("DOMContentLoaded", () => {
 // Utilities for other scripts
 window.poom.auth = { doSignIn, doSignUp, doSignOut, refreshAuthUI };
 window.poom.ui = { applyTheme, applyMotionPref };
-window.poom.gauges = { set(selector, v01) { const el = document.querySelector(selector); if (el) { el.setAttribute("data-value", String(v01)); renderGauges(); } } };
+window.poom.gauges = {
+  set(selector, v01) {
+    const el = document.querySelector(selector);
+    if (el) {
+      el.setAttribute("data-value", String(v01));
+      renderGauges();
+    }
+  }
+};
