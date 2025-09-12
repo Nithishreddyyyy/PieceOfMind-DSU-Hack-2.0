@@ -48,6 +48,10 @@ async def test_login(request: Request):
     return templates.TemplateResponse("testLogin.html", {"request": request})
 
 # Alternative routes that match the HTML template paths
+@app.get("/settings.html")
+async def settings_html_redirect():
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/settings", status_code=302)
 @app.get("/app/templates/index.html")
 async def index_alt():
     return RedirectResponse(url="/", status_code=302)
