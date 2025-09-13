@@ -29,14 +29,14 @@
       <p class="muted" data-reveal="fade">Status: <strong>Balanced</strong></p>
 
       <div class="gauges" data-magnetic>
-        <div class="gauge" data-tilt="6" data-reveal="up"><h3>Strain</h3><div class="circular-gauge" data-value="0.42"></div></div>
-        <div class="gauge" data-tilt="6" data-reveal="up"><h3>Drift</h3><div class="circular-gauge" data-value="0.31"></div></div>
+        <div class="gauge" data-tilt="6" data-reveal="up"><h3>Strain</h3><div class="circular-gauge" data-value="{{ strain if strain is not none else 0 }}"></div></div>
+        <div class="gauge" data-tilt="6" data-reveal="up"><h3>Drift</h3><div class="circular-gauge" data-value="{{ drift if drift is not none else 0 }}"></div></div>
         <div class="gauge" data-tilt="6" data-reveal="up"><h3>Focus window</h3><p>09:30–11:00, 14:10–15:30</p></div>
       </div>
 
       <div class="feature-cards" style="margin-top:10px" data-reveal="up" data-magnetic>
         <div class="card" data-tilt="4"><h4>Quick actions</h4><p><button class="btn btn-primary">Start 25-min Focus</button> <button class="btn btn-ghost">Mini break</button></p></div>
-        <div class="card" data-tilt="4"><h4>Recovery hint</h4><p>2× box-breathing rounds recommended after next meeting.</p></div>
+        <div class="card" data-tilt="4"><h4>Recovery hint</h4><p>{{ recovery_hint if recovery_hint else "No hint available." }}</p></div>
         <div class="card" data-tilt="4"><h4>Recent sessions</h4><p>3 focus, 2 recovery, 1 stretch.</p></div>
       </div>
     </section>

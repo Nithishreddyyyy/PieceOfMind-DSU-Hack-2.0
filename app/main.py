@@ -91,7 +91,29 @@ async def login_post(request: Request, email: str = Form(...), password: str = F
 
 @app.get("/dashboard")
 async def dashboard(request: Request, user: dict = Depends(login_required)):
-    return templates.TemplateResponse("dashboard.html", {"request": request, "user": user})
+    conn = get_mysql_connection()
+    cursor = conn.cursor()
+    # Get user ID
+    cursor.execute("SELECT ID FROM Users WHERE Email = %s", (user['email'],))
+    user_row = cursor.fetchone()
+    metrics = None
+    if user_row:
+        uid = user_row['ID']
+        cursor.execute("SELECT Strain, Drift, RecoveryHint FROM Metrics WHERE UID = %s ORDER BY MID DESC LIMIT 1", (uid,))
+        metrics = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    # Default values if no metrics found
+    strain = metrics['Strain'] if metrics else None
+    drift = metrics['Drift'] if metrics else None
+    recovery_hint = metrics['RecoveryHint'] if metrics else None
+    return templates.TemplateResponse("dashboard.html", {
+        "request": request,
+        "user": user,
+        "strain": strain,
+        "drift": drift,
+        "recovery_hint": recovery_hint
+    })
 
 
 
@@ -114,8 +136,8 @@ async def settings(request: Request, user: dict = Depends(login_required)):
 
 
 @app.get("/onboarding")
-async def onboarding(request: Request, user: dict = Depends(login_required)):
-    return templates.TemplateResponse("onboarding.html", {"request": request, "user": user})
+async def onboarding(request: Request):
+    return templates.TemplateResponse("onboarding.html", {"request": request})
 
 
 @app.get("/privacy")
