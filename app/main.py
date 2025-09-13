@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
@@ -77,41 +77,39 @@ async def login_post(request: Request, email: str = Form(...), password: str = F
 
 
 def login_required(request: Request):
+    print("Session:", request.session)
     user = request.session.get("user")
-    return bool(user)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    return True
 
 @app.get("/dashboard")
 async def dashboard(request: Request):
-    if not login_required(request):
-        return RedirectResponse(url="/login", status_code=302)
+    login_required(request)
     return templates.TemplateResponse("dashboard.html", {"request": request})
 
 
 @app.get("/monitoring")
 async def monitoring(request: Request):
-    if not login_required(request):
-        return RedirectResponse(url="/login", status_code=302)
+    login_required(request)
     return templates.TemplateResponse("monitoring.html", {"request": request})
 
 
 @app.get("/focus")
 async def focus(request: Request):
-    if not login_required(request):
-        return RedirectResponse(url="/login", status_code=302)
+    login_required(request)
     return templates.TemplateResponse("focus.html", {"request": request})
 
 
 @app.get("/settings")
 async def settings(request: Request):
-    if not login_required(request):
-        return RedirectResponse(url="/login", status_code=302)
+    login_required(request)
     return templates.TemplateResponse("settings.html", {"request": request})
 
 
 @app.get("/onboarding")
 async def onboarding(request: Request):
-    if not login_required(request):
-        return RedirectResponse(url="/login", status_code=302)
+    login_required(request)
     return templates.TemplateResponse("onboarding.html", {"request": request})
 
 
@@ -127,8 +125,7 @@ async def terms(request: Request):
 
 @app.get("/testLogin")
 async def test_login(request: Request):
-    if not login_required(request):
-        return RedirectResponse(url="/login", status_code=302)
+    login_required(request)
     return templates.TemplateResponse("testLogin.html", {"request": request})
 
 # ------------------------
