@@ -1,40 +1,34 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse
+
+from fastapi.responses import RedirectResponse, JSONResponse
 from starlette.middleware.sessions import SessionMiddleware
-from authlib.integrations.starlette_client import OAuth
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
+import pymysql
+from werkzeug.security import check_password_hash
 from dotenv import load_dotenv
 import os
 
+
 # Load environment variables
 load_dotenv()
-AUTH0_DOMAIN = os.getenv("AUTH0_DOMAIN")
-AUTH0_CLIENT_ID = os.getenv("AUTH0_CLIENT_ID")
-AUTH0_CLIENT_SECRET = os.getenv("AUTH0_CLIENT_SECRET")
-AUTH0_API_AUDIENCE = os.getenv("AUTH0_API_AUDIENCE")
 SESSION_SECRET = os.getenv("SESSION_SECRET", "supersecretkey")
 
-# Configure OAuth with Auth0
-oauth = OAuth()
-oauth.register(
-    name="auth0",
-    client_id=AUTH0_CLIENT_ID,
-    client_secret=AUTH0_CLIENT_SECRET,
-    server_metadata_url=f"https://{AUTH0_DOMAIN}/.well-known/openid-configuration",
-    client_kwargs={"scope": "openid profile email"},
-)
 
-# MongoDB setup
-mongo_uri = os.getenv(
-    "MONGO_URI",
-    "mongodb+srv://admin:test1234@devhack.6gqwt4w.mongodb.net/?retryWrites=true&w=majority&appName=DevHack",
-)
-mongo_client = MongoClient(mongo_uri, server_api=ServerApi("1"))
-mongo_db = mongo_client["pieceofmind"]
-users_collection = mongo_db["users"]
+# MySQL setup
+MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
+MYSQL_USER = os.getenv("MYSQL_USER", "root")
+MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "test1234")
+MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "DSUHack")
+
+def get_mysql_connection():
+    return pymysql.connect(
+        host=MYSQL_HOST,
+        user=MYSQL_USER,
+        password=MYSQL_PASSWORD,
+        database=MYSQL_DATABASE,
+        cursorclass=pymysql.cursors.DictCursor
+    )
 
 # FastAPI app setup
 app = FastAPI()
@@ -42,49 +36,7 @@ app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET)
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# ------------------------
-# Auth Routes
-# ------------------------
 
-@app.get("/login")
-async def login(request: Request):
-    redirect_uri = request.url_for("callback")
-    return await oauth.auth0.authorize_redirect(request, redirect_uri)
-
-
-@app.get("/callback")
-async def callback(request: Request):
-    token = await oauth.auth0.authorize_access_token(request)
-    userinfo = token.get("userinfo") or await oauth.auth0.parse_id_token(request, token)
-
-    # Store user in MongoDB if not exists
-    auth0_id = userinfo.get("sub")
-    email = userinfo.get("email")
-    name = userinfo.get("name")
-
-    if not users_collection.find_one({"auth0_id": auth0_id}):
-        users_collection.insert_one(
-            {
-                "auth0_id": auth0_id,
-                "email": email,
-                "full_name": name,
-                "profile": userinfo,
-            }
-        )
-
-    # Save user in session
-    request.session["user"] = userinfo
-    return RedirectResponse(url="/")
-
-
-@app.get("/logout")
-async def logout(request: Request):
-    request.session.pop("user", None)
-    return_to = str(request.url_for("index"))
-    return RedirectResponse(
-        url=f"https://{AUTH0_DOMAIN}/v2/logout?client_id={AUTH0_CLIENT_ID}&returnTo={return_to}",
-        status_code=302,
-    )
 
 # ------------------------
 # Main Routes
@@ -96,28 +48,70 @@ async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "user": user})
 
 
+
+# Login page (GET)
+@app.get("/login")
+async def login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request, "error": None})
+
+# Login form submission (POST)
+@app.post("/login")
+async def login_post(request: Request, email: str = Form(...), password: str = Form(...)):
+    conn = get_mysql_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT Name, Email, Password FROM Users WHERE Email = %s", (email,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    error = None
+    if user:
+        db_password = user['Password']
+        if db_password == password or check_password_hash(db_password, password):
+            request.session['user'] = {"email": user['Email'], "name": user['Name']}
+            return RedirectResponse(url="/dashboard", status_code=302)
+        else:
+            error = "Wrong credentials."
+    else:
+        error = "Wrong credentials."
+    return templates.TemplateResponse("login.html", {"request": request, "error": error, "email": email})
+
+
+def login_required(request: Request):
+    user = request.session.get("user")
+    return bool(user)
+
 @app.get("/dashboard")
 async def dashboard(request: Request):
+    if not login_required(request):
+        return RedirectResponse(url="/login", status_code=302)
     return templates.TemplateResponse("dashboard.html", {"request": request})
 
 
 @app.get("/monitoring")
 async def monitoring(request: Request):
+    if not login_required(request):
+        return RedirectResponse(url="/login", status_code=302)
     return templates.TemplateResponse("monitoring.html", {"request": request})
 
 
 @app.get("/focus")
 async def focus(request: Request):
+    if not login_required(request):
+        return RedirectResponse(url="/login", status_code=302)
     return templates.TemplateResponse("focus.html", {"request": request})
 
 
 @app.get("/settings")
 async def settings(request: Request):
+    if not login_required(request):
+        return RedirectResponse(url="/login", status_code=302)
     return templates.TemplateResponse("settings.html", {"request": request})
 
 
 @app.get("/onboarding")
 async def onboarding(request: Request):
+    if not login_required(request):
+        return RedirectResponse(url="/login", status_code=302)
     return templates.TemplateResponse("onboarding.html", {"request": request})
 
 
@@ -133,6 +127,8 @@ async def terms(request: Request):
 
 @app.get("/testLogin")
 async def test_login(request: Request):
+    if not login_required(request):
+        return RedirectResponse(url="/login", status_code=302)
     return templates.TemplateResponse("testLogin.html", {"request": request})
 
 # ------------------------
