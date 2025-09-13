@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login | PieceOfMind</title>
+  <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+  <div class="centered-form" style="max-width:400px;margin:10vh auto;padding:2em;background:#fff;border-radius:8px;box-shadow:0 2px 16px #0002;">
+    <h2>Login</h2>
+    {% if error %}
+      <div style="color:red;margin-bottom:1em;">{{ error }}</div>
+    {% endif %}
+    <form method="post" action="/login">
+      <label>Email:</label>
+      <input type="email" name="email" value="{{ email if email else '' }}" required style="width:100%;margin-bottom:1em;">
+      <label>Password:</label>
+      <input type="password" name="password" required style="width:100%;margin-bottom:1em;">
+      <button type="submit" class="btn btn-primary" style="width:100%;">Login</button>
+    </form>
+    <a href="/">Back to Home</a>
+  </div>
+</body>
+</html>
