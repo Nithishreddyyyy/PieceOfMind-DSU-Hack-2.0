@@ -134,6 +134,32 @@ async def test_login(request: Request, user: dict = Depends(login_required)):
     return templates.TemplateResponse("testLogin.html", {"request": request, "user": user})
 
 
+@app.get("/signup")
+async def signup_page(request: Request):
+    return templates.TemplateResponse("signup.html", {"request": request, "error": None})
+
+@app.post("/signup")
+async def signup_post(request: Request, name: str = Form(...), email: str = Form(...), password: str = Form(...)):
+    conn = get_mysql_connection()
+    cursor = conn.cursor()
+    # Check if user already exists
+    cursor.execute("SELECT Email FROM Users WHERE Email = %s", (email,))
+    existing = cursor.fetchone()
+    if existing:
+        cursor.close()
+        conn.close()
+        error = "Email already registered."
+        return templates.TemplateResponse("signup.html", {"request": request, "error": error, "name": name, "email": email})
+    # Insert new user
+    cursor.execute("INSERT INTO Users (Name, Email, Password) VALUES (%s, %s, %s)", (name, email, password))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    # Optionally log in user after signup
+    request.session['user'] = {"email": email, "name": name}
+    return RedirectResponse(url="/dashboard", status_code=302)
+
+
 # ------------------------
 # Redirects for HTML paths
 # ------------------------
