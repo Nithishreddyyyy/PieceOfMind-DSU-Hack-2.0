@@ -1,8 +1,7 @@
-from fastapi import FastAPI, Request, Form, HTTPException
+from fastapi import FastAPI, Request, Form, HTTPException, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-
-from fastapi.responses import RedirectResponse, JSONResponse
+from fastapi.responses import RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 import pymysql
 from werkzeug.security import check_password_hash
@@ -14,12 +13,12 @@ import os
 load_dotenv()
 SESSION_SECRET = os.getenv("SESSION_SECRET", "supersecretkey")
 
-
 # MySQL setup
 MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "test1234")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "DSUHack")
+
 
 def get_mysql_connection():
     return pymysql.connect(
@@ -30,6 +29,7 @@ def get_mysql_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
+
 # FastAPI app setup
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET)
@@ -37,9 +37,21 @@ templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
+# ------------------------
+# Auth Helpers
+# ------------------------
+
+
+# Dependency for login protection
+def login_required(request: Request):
+    user = request.session.get("user")
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    return user
+
 
 # ------------------------
-# Main Routes
+# Routes
 # ------------------------
 
 @app.get("/")
@@ -48,13 +60,11 @@ async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "user": user})
 
 
-
-# Login page (GET)
 @app.get("/login")
 async def login_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request, "error": None})
 
-# Login form submission (POST)
+
 @app.post("/login")
 async def login_post(request: Request, email: str = Form(...), password: str = Form(...)):
     conn = get_mysql_connection()
@@ -63,6 +73,7 @@ async def login_post(request: Request, email: str = Form(...), password: str = F
     user = cursor.fetchone()
     cursor.close()
     conn.close()
+
     error = None
     if user:
         db_password = user['Password']
@@ -73,44 +84,38 @@ async def login_post(request: Request, email: str = Form(...), password: str = F
             error = "Wrong credentials."
     else:
         error = "Wrong credentials."
+
     return templates.TemplateResponse("login.html", {"request": request, "error": error, "email": email})
 
 
-def login_required(request: Request):
-    print("Session:", request.session)
-    user = request.session.get("user")
-    if not user:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    return True
 
 @app.get("/dashboard")
-async def dashboard(request: Request):
-    login_required(request)
-    return templates.TemplateResponse("dashboard.html", {"request": request})
+async def dashboard(request: Request, user: dict = Depends(login_required)):
+    return templates.TemplateResponse("dashboard.html", {"request": request, "user": user})
+
 
 
 @app.get("/monitoring")
-async def monitoring(request: Request):
-    login_required(request)
-    return templates.TemplateResponse("monitoring.html", {"request": request})
+async def monitoring(request: Request, user: dict = Depends(login_required)):
+    return templates.TemplateResponse("monitoring.html", {"request": request, "user": user})
+
 
 
 @app.get("/focus")
-async def focus(request: Request):
-    login_required(request)
-    return templates.TemplateResponse("focus.html", {"request": request})
+async def focus(request: Request, user: dict = Depends(login_required)):
+    return templates.TemplateResponse("focus.html", {"request": request, "user": user})
+
 
 
 @app.get("/settings")
-async def settings(request: Request):
-    login_required(request)
-    return templates.TemplateResponse("settings.html", {"request": request})
+async def settings(request: Request, user: dict = Depends(login_required)):
+    return templates.TemplateResponse("settings.html", {"request": request, "user": user})
+
 
 
 @app.get("/onboarding")
-async def onboarding(request: Request):
-    login_required(request)
-    return templates.TemplateResponse("onboarding.html", {"request": request})
+async def onboarding(request: Request, user: dict = Depends(login_required)):
+    return templates.TemplateResponse("onboarding.html", {"request": request, "user": user})
 
 
 @app.get("/privacy")
@@ -123,10 +128,11 @@ async def terms(request: Request):
     return templates.TemplateResponse("terms.html", {"request": request})
 
 
+
 @app.get("/testLogin")
-async def test_login(request: Request):
-    login_required(request)
-    return templates.TemplateResponse("testLogin.html", {"request": request})
+async def test_login(request: Request, user: dict = Depends(login_required)):
+    return templates.TemplateResponse("testLogin.html", {"request": request, "user": user})
+
 
 # ------------------------
 # Redirects for HTML paths
@@ -136,9 +142,9 @@ async def test_login(request: Request):
 async def settings_html_redirect():
     return RedirectResponse(url="/settings", status_code=302)
 
+
 @app.get("/app/templates/{page_name}.html")
 async def template_redirect(page_name: str):
-    # Map directly to main route names
     redirect_map = {
         "index": "/",
         "dashboard": "/dashboard",
