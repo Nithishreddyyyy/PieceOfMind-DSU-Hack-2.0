@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Focus Catcher Game</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <h1 id="game-title">🎯 Focus Catcher</h1>
+  <div id="game-container">
+    <video id="webcam" autoplay muted></video>
+    <div id="scoreboard">
+      <h1>Score: <span id="score">0</span></h1>
+      <h2>High Score: <span id="high-score">0</span></h2>
+      <h3>Time Left: <span id="timer">30</span>s</h3>
+    </div>
+    <div id="controls">
+      <button id="start-btn">Start</button>
+      <button id="stop-btn">Stop</button>
+      <button id="reset-btn">Reset High Score</button>
+    </div>
+    
+
+    
+    <div id="target"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
