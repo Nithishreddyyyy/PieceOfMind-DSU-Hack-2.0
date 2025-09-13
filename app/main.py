@@ -1,19 +1,29 @@
 from fastapi import FastAPI, Request, Form, HTTPException, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, JSONResponse
 from starlette.middleware.sessions import SessionMiddleware
 import pymysql
 from werkzeug.security import check_password_hash
 from dotenv import load_dotenv
 import os
+import google.generativeai as genai
 
-
+# ------------------------
 # Load environment variables
+# ------------------------
 load_dotenv()
 SESSION_SECRET = os.getenv("SESSION_SECRET", "supersecretkey")
 
+# Gemini setup
+api_key = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel(model_name="models/gemini-2.0-flash")
+chat = model.start_chat(history=[])
+
+# ------------------------
 # MySQL setup
+# ------------------------
 MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "test1234")
@@ -30,7 +40,9 @@ def get_mysql_connection():
     )
 
 
-# FastAPI app setup
+# ------------------------
+# FastAPI setup
+# ------------------------
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET)
 templates = Jinja2Templates(directory="templates")
@@ -40,9 +52,6 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # ------------------------
 # Auth Helpers
 # ------------------------
-
-
-# Dependency for login protection
 def login_required(request: Request):
     user = request.session.get("user")
     if not user:
@@ -69,7 +78,7 @@ async def login_page(request: Request):
 async def login_post(request: Request, email: str = Form(...), password: str = Form(...)):
     conn = get_mysql_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT Name, Email, Password FROM Users WHERE Email = %s", (email,))
+    cursor.execute("SELECT ID, Name, Email, Password FROM Users WHERE Email = %s", (email,))
     user = cursor.fetchone()
     cursor.close()
     conn.close()
@@ -88,12 +97,10 @@ async def login_post(request: Request, email: str = Form(...), password: str = F
     return templates.TemplateResponse("login.html", {"request": request, "error": error, "email": email})
 
 
-
 @app.get("/dashboard")
 async def dashboard(request: Request, user: dict = Depends(login_required)):
     conn = get_mysql_connection()
     cursor = conn.cursor()
-    # Get user ID
     cursor.execute("SELECT ID FROM Users WHERE Email = %s", (user['email'],))
     user_row = cursor.fetchone()
     metrics = None
@@ -103,10 +110,11 @@ async def dashboard(request: Request, user: dict = Depends(login_required)):
         metrics = cursor.fetchone()
     cursor.close()
     conn.close()
-    # Default values if no metrics found
+
     strain = metrics['Strain'] if metrics else None
     drift = metrics['Drift'] if metrics else None
     recovery_hint = metrics['RecoveryHint'] if metrics else None
+
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
         "user": user,
@@ -116,11 +124,9 @@ async def dashboard(request: Request, user: dict = Depends(login_required)):
     })
 
 
-
 @app.get("/monitoring")
 async def monitoring(request: Request, user: dict = Depends(login_required)):
     return templates.TemplateResponse("monitoring.html", {"request": request, "user": user})
-
 
 
 @app.get("/focus")
@@ -128,11 +134,9 @@ async def focus(request: Request, user: dict = Depends(login_required)):
     return templates.TemplateResponse("focus.html", {"request": request, "user": user})
 
 
-
 @app.get("/settings")
 async def settings(request: Request, user: dict = Depends(login_required)):
     return templates.TemplateResponse("settings.html", {"request": request, "user": user})
-
 
 
 @app.get("/onboarding")
@@ -150,7 +154,6 @@ async def terms(request: Request):
     return templates.TemplateResponse("terms.html", {"request": request})
 
 
-
 @app.get("/testLogin")
 async def test_login(request: Request, user: dict = Depends(login_required)):
     return templates.TemplateResponse("testLogin.html", {"request": request, "user": user})
@@ -160,11 +163,11 @@ async def test_login(request: Request, user: dict = Depends(login_required)):
 async def signup_page(request: Request):
     return templates.TemplateResponse("signup.html", {"request": request, "error": None})
 
+
 @app.post("/signup")
 async def signup_post(request: Request, name: str = Form(...), email: str = Form(...), password: str = Form(...)):
     conn = get_mysql_connection()
     cursor = conn.cursor()
-    # Check if user already exists
     cursor.execute("SELECT Email FROM Users WHERE Email = %s", (email,))
     existing = cursor.fetchone()
     if existing:
@@ -172,20 +175,33 @@ async def signup_post(request: Request, name: str = Form(...), email: str = Form
         conn.close()
         error = "Email already registered."
         return templates.TemplateResponse("signup.html", {"request": request, "error": error, "name": name, "email": email})
-    # Insert new user
+
     cursor.execute("INSERT INTO Users (Name, Email, Password) VALUES (%s, %s, %s)", (name, email, password))
     conn.commit()
     cursor.close()
     conn.close()
-    # Optionally log in user after signup
+
     request.session['user'] = {"email": email, "name": name}
     return RedirectResponse(url="/dashboard", status_code=302)
 
 
 # ------------------------
-# Redirects for HTML paths
+# Gemini Chat API
 # ------------------------
+@app.post("/chat")
+async def chat_response(request: Request):
+    data = await request.json()
+    user_input = data.get("message", "")
+    try:
+        response = chat.send_message(user_input)
+        return JSONResponse({"response": response.text})
+    except Exception as e:
+        return JSONResponse({"response": f"Error: {str(e)}"})
 
+
+# ------------------------
+# Redirects
+# ------------------------
 @app.get("/settings.html")
 async def settings_html_redirect():
     return RedirectResponse(url="/settings", status_code=302)

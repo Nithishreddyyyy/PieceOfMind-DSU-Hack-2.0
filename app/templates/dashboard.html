@@ -14,10 +14,10 @@
     <h1 class="brand"><a href="/">PieceOfMind</a></h1>
     <nav>
       <ul>
-  <li><a href="/dashboard" class="active">Dashboard</a></li>
-  <li><a href="/monitoring">Monitoring</a></li>
-  <li><a href="/focus">Focus</a></li>
-  <li><a href="/settings">Settings</a></li>
+        <li><a href="/dashboard" class="active">Dashboard</a></li>
+        <li><a href="/monitoring">Monitoring</a></li>
+        <li><a href="/focus">Focus</a></li>
+        <li><a href="/settings">Settings</a></li>
       </ul>
     </nav>
     <div class="header-actions"><button id="btn-logout" class="btn btn-ghost">Log out</button><button class="theme-toggle" aria-label="Toggle theme">🌓</button></div>
@@ -51,10 +51,135 @@
 
   <script src="../static/js/app.js?v=7"></script>
   <script src="../static/js/effects.js?v=7"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
-<script src="../static/js/bg-clouds.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
+  <script src="../static/js/bg-clouds.js"></script>
 
+  <!-- Chatbot Widget -->
+  <div id="chatbot-container">
+    <button id="chatbot-toggle">💬</button>
+    <div id="chatbot-box" class="hidden">
+      <div id="chatbot-header">
+        <span>Gemini Assistant</span>
+        <button id="chatbot-close">✕</button>
+      </div>
+      <div id="chatbot-messages"></div>
+      <div id="chatbot-input">
+        <input type="text" id="chatbot-text" placeholder="Type a message...">
+        <button id="chatbot-send">Send</button>
+      </div>
+    </div>
+  </div>
 
+  <style>
+  #chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+  }
+  #chatbot-toggle {
+    background: #007bff;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  }
+  #chatbot-box {
+    width: 300px;
+    height: 400px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+  }
+  .hidden { display: none; }
+  #chatbot-header {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #chatbot-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 14px;
+  }
+  #chatbot-input {
+    display: flex;
+    border-top: 1px solid #ddd;
+  }
+  #chatbot-input input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    font-size: 14px;
+  }
+  #chatbot-input button {
+    border: none;
+    background: #007bff;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  </style>
+
+  <script>
+  const chatbotToggle = document.getElementById("chatbot-toggle");
+  const chatbotBox = document.getElementById("chatbot-box");
+  const chatbotClose = document.getElementById("chatbot-close");
+  const chatbotSend = document.getElementById("chatbot-send");
+  const chatbotText = document.getElementById("chatbot-text");
+  const chatbotMessages = document.getElementById("chatbot-messages");
+
+  chatbotToggle.addEventListener("click", () => {
+    chatbotBox.classList.toggle("hidden");
+  });
+
+  chatbotClose.addEventListener("click", () => {
+    chatbotBox.classList.add("hidden");
+  });
+
+  chatbotSend.addEventListener("click", sendMessage);
+  chatbotText.addEventListener("keypress", e => {
+    if (e.key === "Enter") sendMessage();
+  });
+
+  async function sendMessage() {
+    const message = chatbotText.value.trim();
+    if (!message) return;
+
+    appendMessage("You", message);
+    chatbotText.value = "";
+
+    const response = await fetch("/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message })
+    });
+    const data = await response.json();
+    appendMessage("Bot", data.response);
+  }
+
+  function appendMessage(sender, text) {
+    const div = document.createElement("div");
+    div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+    chatbotMessages.appendChild(div);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+  </script>
 </body>
 </html>
