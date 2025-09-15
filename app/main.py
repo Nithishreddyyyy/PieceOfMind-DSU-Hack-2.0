@@ -24,10 +24,16 @@ chat = model.start_chat(history=[])
 # ------------------------
 # MySQL setup
 # ------------------------
-MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
-MYSQL_USER = os.getenv("MYSQL_USER", "root")
-MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "test1234")
-MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "DSUHack")
+# MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
+# MYSQL_USER = os.getenv("MYSQL_USER", "root")
+# MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "test1234")
+# MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "DSUHack")
+
+MYSQL_HOST = "myrdsmysql.cv4m82mkexvc.ap-south-1.rds.amazonaws.com"
+MYSQL_USER = "root"
+MYSQL_PASSWORD = "test1234"
+MYSQL_DATABASE = "DSUHack"
+
 
 
 def get_mysql_connection():
