@@ -8,6 +8,7 @@ from werkzeug.security import check_password_hash
 from dotenv import load_dotenv
 import os
 import google.generativeai as genai
+import uvicorn
 
 # ------------------------
 # Load environment variables
@@ -228,3 +229,6 @@ async def template_redirect(page_name: str):
     }
     target = redirect_map.get(page_name, "/")
     return RedirectResponse(url=target, status_code=302)
+
+if __name__ == "__main__":
+    uvicorn.run("main:app",host="0.0.0.0",port=8000,reload=True)
